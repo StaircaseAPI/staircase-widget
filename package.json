@@ -1,7 +1,6 @@
 {
   "name": "staircase-widget",
   "main": "./dist/index.js",
-  "private": true,
   "version": "0.1.0",
   "dependencies": {
     "@chakra-ui/react": "^2.0.0",
