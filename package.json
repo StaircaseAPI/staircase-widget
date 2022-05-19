@@ -7,8 +7,10 @@
   "files": [
     "dist"
   ],
-  "keywords": ["staircase"],
-  "version": "0.1.4",
+  "keywords": [
+    "staircase"
+  ],
+  "version": "0.2.0",
   "dependencies": {
     "@chakra-ui/react": "^2.0.0",
     "@emotion/react": "^11",
