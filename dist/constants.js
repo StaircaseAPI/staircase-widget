@@ -12,7 +12,7 @@ export var WIDGET_FORM_FIELDS = [
         label: 'TWN Password',
         name: 'twn_password',
         placeholder: 'Enter TWN Password',
-        type: 'string',
+        type: 'password',
         validation: {
             required: 'This is required',
         },
@@ -21,7 +21,7 @@ export var WIDGET_FORM_FIELDS = [
         label: 'PFX Certificate Password',
         name: 'pfx_certificate_password',
         placeholder: 'Enter PFX Certificate Password',
-        type: 'string',
+        type: 'password',
         validation: {
             required: 'This is required',
         },

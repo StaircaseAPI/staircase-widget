@@ -2,7 +2,7 @@ export interface Field {
     name: string
     label: string
     placeholder: string
-    type: 'string' | 'file' | 'select' | 'color'
+    type: 'string' | 'file' | 'select' | 'color' | 'password'
     validation?: {
         required?: string
         minLength?: { value: number; message: string }
@@ -26,7 +26,7 @@ export const WIDGET_FORM_FIELDS: Field[] = [
         label: 'TWN Password',
         name: 'twn_password',
         placeholder: 'Enter TWN Password',
-        type: 'string',
+        type: 'password',
         validation: {
             required: 'This is required',
         },
@@ -35,7 +35,7 @@ export const WIDGET_FORM_FIELDS: Field[] = [
         label: 'PFX Certificate Password',
         name: 'pfx_certificate_password',
         placeholder: 'Enter PFX Certificate Password',
-        type: 'string',
+        type: 'password',
         validation: {
             required: 'This is required',
         },

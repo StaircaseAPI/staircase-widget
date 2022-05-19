@@ -2,7 +2,7 @@ export interface Field {
     name: string;
     label: string;
     placeholder: string;
-    type: 'string' | 'file' | 'select' | 'color';
+    type: 'string' | 'file' | 'select' | 'color' | 'password';
     validation?: {
         required?: string;
         minLength?: {
