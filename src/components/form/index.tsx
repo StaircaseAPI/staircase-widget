@@ -86,6 +86,30 @@ export const FormComponent = ({
                                         </FormErrorMessage>
                                     </FormControl>
                                 )
+                            case 'password':
+                                return (
+                                    <FormControl
+                                        key={index}
+                                        pt="15px"
+                                        isInvalid={errors[name]}
+                                    >
+                                        <FormLabel htmlFor={name}>
+                                            {label}
+                                        </FormLabel>
+                                        <Input
+                                            type="password"
+                                            id={name}
+                                            placeholder={placeholder}
+                                            borderRadius={0}
+                                            padding='12px 20px'
+                                            fontSize='12px'
+                                            {...register(name, validation)}
+                                        />
+                                        <FormErrorMessage>
+                                            {errors.name && errors.name.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                )
                             case 'select':
                                 return (
                                     <FormControl
