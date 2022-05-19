@@ -49,9 +49,9 @@ export class Api {
     ) => {
         return await this.request({
             method: 'POST',
-            baseURL,
+            baseURL: "https://" + baseURL,
             headers: { 'x-api-key': apiKey },
-            url: `/jobs/${job_name}/executions`,
+            url: `/job/jobs/${job_name}/executions`,
             data: JSON.stringify({
                 request_payload,
                 callback_url,
@@ -67,9 +67,9 @@ export class Api {
     ) => {
         return await this.request({
             method: 'GET',
-            baseURL,
+            baseURL: "https://" + baseURL,
             headers: { 'x-api-key': apiKey },
-            url: `/jobs/${job_name}/executions/${execution_id}`,
+            url: `/job/jobs/${job_name}/executions/${execution_id}`,
         })
     }
 
@@ -82,9 +82,9 @@ export class Api {
     ) => {
         return await this.request({
             method: 'POST',
-            baseURL,
+            baseURL: "https://" + baseURL,
             headers: { 'x-api-key': apiKey },
-            url: `/jobs/${job_name}/executions/${execution_id}/resume`,
+            url: `/job/jobs/${job_name}/executions/${execution_id}/resume`,
             data: JSON.stringify(body),
         })
     }

@@ -48,9 +48,16 @@ export const WidgetComponent = (props: Props) => {
         if (token) {
             const decodedToken: any = decodeJWTToken(token)
             setWidgetSettings(decodedToken)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (widgetSettings) {
             initCheckInvocation()
         }
-    }, [token])
+    }, [widgetSettings])
+
+    console.log({widgetSettings})
 
     // ONCE FORM COMPLETED
     const onFormComplete = async (values: any) => {
@@ -71,6 +78,7 @@ export const WidgetComponent = (props: Props) => {
         setIsLoading(true)
         while (true) {
             const isFinished = await checkInvocationStatus()
+            console.log({isFinished})
             if (isFinished) {
                 setIsLoading(false)
                 return
@@ -90,7 +98,7 @@ export const WidgetComponent = (props: Props) => {
             execution_id
         } = widgetSettings
         const status = await api.getJobExecutionDetails(origin, api_key, job_name, execution_id)
-        const { status: cStatus, current_step: cStep, request_payload } = status
+        const { status: cStatus, request_payload } = status
         const { styles: rpStyles } = request_payload
         setStyles(rpStyles)
         switch (cStatus) {
