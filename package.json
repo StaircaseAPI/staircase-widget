@@ -1,5 +1,5 @@
 {
-  "name": "staircase-widget",
+  "name": "@staircase/partner-credentials-widget",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
