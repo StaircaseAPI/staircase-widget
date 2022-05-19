@@ -98,7 +98,7 @@ export const WidgetComponent = (props: Props) => {
             job_name,
             execution_id
         )
-        const { status: cStatus, request_payload } = status
+        const { status: cStatus, request_payload, response_payload } = status
         const { styles: rpStyles } = request_payload
         setStyles(rpStyles)
         switch (cStatus) {
@@ -107,6 +107,7 @@ export const WidgetComponent = (props: Props) => {
                 return true
             case 'SUCCEEDED':
                 onClose()
+                onWidgetComplete(response_payload)
                 return 'Credentials set successfully!'
             case 'FAILED':
                 return 'Execution failed'
