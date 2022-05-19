@@ -45,13 +45,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useContext, useEffect, useState } from 'react';
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure, } from '@chakra-ui/react';
+import { ChakraProvider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure, } from '@chakra-ui/react';
 import { FormComponent } from '../form';
 import { WIDGET_FORM_FIELDS } from '../../constants';
 import { decodeJWTToken } from '../helpers';
-import { Context } from "../../context";
+import { Context } from '../../context';
 export var WidgetComponent = function (props) {
     var token = props.token, onWidgetComplete = props.onWidgetComplete;
     var api = useContext(Context).api;
@@ -81,7 +81,7 @@ export var WidgetComponent = function (props) {
                         return [2 /*return*/];
                     }
                     origin = widgetSettings.origin, api_key = widgetSettings.api_key, job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id;
-                    return [4 /*yield*/, api.resumeJob(origin, api_key, job_name, execution_id, values)];
+                    return [4 /*yield*/, api.resumeJob(origin, api_key, job_name, execution_id, __assign({ type: 'test' }, values))];
                 case 1:
                     _a.sent();
                     return [4 /*yield*/, initCheckInvocation()];
@@ -147,5 +147,5 @@ export var WidgetComponent = function (props) {
             }
         });
     }); };
-    return (_jsx(_Fragment, { children: widgetSettings && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }, void 0), _jsxs(ModalContent, __assign({ borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx("b", { children: "Please enter your credentials" }, void 0) }, void 0), _jsx(ModalCloseButton, {}, void 0), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: WIDGET_FORM_FIELDS, onFormComplete: onFormComplete, isLoading: isLoading, styles: styles }, void 0) }, void 0)] }), void 0)] }), void 0)) }, void 0));
+    return (_jsx(ChakraProvider, { children: widgetSettings && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }, void 0), _jsxs(ModalContent, __assign({ borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx("b", { children: "Please enter your credentials" }, void 0) }, void 0), _jsx(ModalCloseButton, {}, void 0), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: WIDGET_FORM_FIELDS, onFormComplete: onFormComplete, isLoading: isLoading, styles: styles }, void 0) }, void 0)] }), void 0)] }), void 0)) }, void 0));
 };
