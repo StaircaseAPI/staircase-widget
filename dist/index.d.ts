@@ -1,1 +1,1 @@
-export {};
+export { WidgetComponent } from './components';

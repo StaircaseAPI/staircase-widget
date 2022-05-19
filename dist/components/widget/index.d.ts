@@ -1,10 +1,7 @@
 /// <reference types="react" />
-import { ThemeTypings } from "@chakra-ui/styled-system";
 interface Props {
-    title: string;
-    bodyText: string;
-    buttonText: string;
-    buttonColorSchema: ThemeTypings["colorSchemes"];
+    token: string;
+    onWidgetComplete: (result: any) => any;
 }
-export declare const WidgetComponent: ({ title, bodyText, buttonText, buttonColorSchema }: Props) => JSX.Element;
+export declare const WidgetComponent: (props: Props) => JSX.Element;
 export {};
