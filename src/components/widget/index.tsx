@@ -1,6 +1,8 @@
 import { ThemeTypings } from '@chakra-ui/styled-system'
 import { useContext, useEffect, useState} from 'react'
+
 import {
+    ChakraProvider,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -118,7 +120,7 @@ export const WidgetComponent = (props: Props) => {
     }
 
     return (
-        <>
+        <ChakraProvider>
             {widgetSettings && (
                 <Modal
                     closeOnOverlayClick={false}
@@ -147,6 +149,6 @@ export const WidgetComponent = (props: Props) => {
                     </ModalContent>
                 </Modal>
             )}
-        </>
+        </ChakraProvider>
     )
 }
