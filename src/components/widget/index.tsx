@@ -1,5 +1,5 @@
 import { ThemeTypings } from '@chakra-ui/styled-system'
-import { useContext, useEffect, useState} from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import {
     ChakraProvider,
@@ -15,7 +15,7 @@ import {
 import { FormComponent } from '../form'
 import { WIDGET_FORM_FIELDS } from '../../constants'
 import { decodeJWTToken } from '../helpers'
-import { Context } from "../../context";
+import { Context } from '../../context'
 
 interface WidgetSettings {
     bg_color: ThemeTypings['colorSchemes']
@@ -59,20 +59,18 @@ export const WidgetComponent = (props: Props) => {
         }
     }, [widgetSettings])
 
-    console.log({widgetSettings})
+    console.log({ widgetSettings })
 
     // ONCE FORM COMPLETED
     const onFormComplete = async (values: any) => {
         if (!widgetSettings) {
             return
         }
-        const {
-            origin,
-            api_key,
-            job_name,
-            execution_id
-        } = widgetSettings
-        await api.resumeJob(origin, api_key, job_name, execution_id, values)
+        const { origin, api_key, job_name, execution_id } = widgetSettings
+        await api.resumeJob(origin, api_key, job_name, execution_id, {
+            type: 'test',
+            ...values,
+        })
         await initCheckInvocation()
     }
 
@@ -80,7 +78,7 @@ export const WidgetComponent = (props: Props) => {
         setIsLoading(true)
         while (true) {
             const isFinished = await checkInvocationStatus()
-            console.log({isFinished})
+            console.log({ isFinished })
             if (isFinished) {
                 setIsLoading(false)
                 return
@@ -93,13 +91,13 @@ export const WidgetComponent = (props: Props) => {
         if (!widgetSettings) {
             return
         }
-        const {
+        const { origin, api_key, job_name, execution_id } = widgetSettings
+        const status = await api.getJobExecutionDetails(
             origin,
             api_key,
             job_name,
             execution_id
-        } = widgetSettings
-        const status = await api.getJobExecutionDetails(origin, api_key, job_name, execution_id)
+        )
         const { status: cStatus, request_payload } = status
         const { styles: rpStyles } = request_payload
         setStyles(rpStyles)
@@ -131,9 +129,7 @@ export const WidgetComponent = (props: Props) => {
                     size={'sm'}
                 >
                     <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
-                    <ModalContent
-                        borderRadius={0}
-                    >
+                    <ModalContent borderRadius={0}>
                         <ModalHeader>
                             <b>Please enter your credentials</b>
                         </ModalHeader>
