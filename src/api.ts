@@ -9,12 +9,17 @@ export class Api {
     axios: AxiosInstance
 
     domain = window.location.host.includes('localhost')
-        ? 'dev-lower.staircaseapi.com'
-        : window.location.host
+        ? 'borrower.staircaseapi.com'
+        : // ? 'console-dev.staircaseapi.com'
+          window.location.host
+
+    apiKey = '2564a812-dcc8-4923-a1d3-838c8d67fb6b'
+    // apiKey = 'f7ba8e2e-0d82-43ac-bd20-9789a4f50473'
 
     constructor() {
         this.axios = axios.create({
             baseURL: `https://${this.domain}`,
+            headers: { 'x-api-key': this.apiKey },
         })
 
         axiosRetry(this.axios, {
@@ -35,13 +40,52 @@ export class Api {
             .then((response) => response.data)
     }
 
-    getSettings = async (id: string) => {
+    invokeJob = async (
+        baseURL: string,
+        apiKey: string,
+        job_name: string,
+        request_payload: any,
+        callback_url?: string
+    ) => {
         return await this.request({
             method: 'POST',
-            url: '/preapproval/get-settings',
-            data: JSON.stringify({ id }),
+            baseURL,
+            headers: { 'x-api-key': apiKey },
+            url: `/jobs/${job_name}/executions`,
+            data: JSON.stringify({
+                request_payload,
+                callback_url,
+            }),
         })
     }
 
+    getJobExecutionDetails = async (
+        baseURL: string,
+        apiKey: string,
+        job_name: string,
+        execution_id: string
+    ) => {
+        return await this.request({
+            method: 'GET',
+            baseURL,
+            headers: { 'x-api-key': apiKey },
+            url: `/jobs/${job_name}/executions/${execution_id}`,
+        })
+    }
 
+    resumeJob = async (
+        baseURL: string,
+        apiKey: string,
+        job_name: string,
+        execution_id: string,
+        body: any
+    ) => {
+        return await this.request({
+            method: 'POST',
+            baseURL,
+            headers: { 'x-api-key': apiKey },
+            url: `/jobs/${job_name}/executions/${execution_id}/resume`,
+            data: JSON.stringify(body),
+        })
+    }
 }

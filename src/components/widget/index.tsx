@@ -1,57 +1,143 @@
+import { ThemeTypings } from '@chakra-ui/styled-system'
+import { useContext, useEffect, useState} from 'react'
 import {
-    Button,
     Modal,
     ModalBody,
+    ModalCloseButton,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     ModalOverlay,
-    useDisclosure
-} from "@chakra-ui/react";
-import { ThemeTypings } from "@chakra-ui/styled-system";
-import { useEffect } from "react";
+    useDisclosure,
+} from '@chakra-ui/react'
 
-interface Props {
-    title: string,
-    bodyText: string,
-    buttonText: string,
-    buttonColorSchema: ThemeTypings["colorSchemes"]
+import { FormComponent } from '../form'
+import { WIDGET_FORM_FIELDS } from '../../constants'
+import { decodeJWTToken } from '../helpers'
+import { Context } from "../../context";
+
+interface WidgetSettings {
+    bg_color: ThemeTypings['colorSchemes']
+    button_bg_color: ThemeTypings['colorSchemes']
+    partner: 'Equifax' | string
+    product: 'Employment' | string
+    title: string
+    origin: string
+    api_key: string
+    job_name: string
+    execution_id: string
 }
 
-export const WidgetComponent = (
-    {
-        title,
-        bodyText,
-        buttonText,
-        buttonColorSchema
-    }: Props
-) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    useEffect(() => {
-        onOpen()
-    }, [])
-    return (
-        <Modal
-            closeOnOverlayClick={false}
-            isOpen={isOpen}
-            onClose={onClose}
-            isCentered
-            motionPreset='scale'
-            size={'xl'}
-        >
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>{title}</ModalHeader>
-                <ModalBody>
-                    {bodyText}
-                </ModalBody>
+interface Props {
+    token: string
+    onWidgetComplete: (result: any) => any
+}
 
-                <ModalFooter>
-                    <Button colorScheme={ buttonColorSchema} mr={3} onClick={onClose}>
-                        {buttonText}
-                    </Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+export const WidgetComponent = (props: Props) => {
+    const { token, onWidgetComplete } = props
+
+    const { api } = useContext(Context)
+
+    const [widgetSettings, setWidgetSettings] = useState<WidgetSettings>()
+
+    const [styles, setStyles] = useState<any>()
+    const [isLoading, setIsLoading] = useState(false)
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
+    useEffect(() => {
+        if (token) {
+            const decodedToken: any = decodeJWTToken(token)
+            setWidgetSettings(decodedToken)
+            initCheckInvocation()
+        }
+    }, [token])
+
+    // ONCE FORM COMPLETED
+    const onFormComplete = async (values: any) => {
+        if (!widgetSettings) {
+            return
+        }
+        const {
+            origin,
+            api_key,
+            job_name,
+            execution_id
+        } = widgetSettings
+        await api.resumeJob(origin, api_key, job_name, execution_id, values)
+        await initCheckInvocation()
+    }
+
+    const initCheckInvocation = async () => {
+        setIsLoading(true)
+        while (true) {
+            const isFinished = await checkInvocationStatus()
+            if (isFinished) {
+                setIsLoading(false)
+                return
+            }
+        }
+    }
+
+    // CHECK JOB STATUS
+    const checkInvocationStatus = async () => {
+        if (!widgetSettings) {
+            return
+        }
+        const {
+            origin,
+            api_key,
+            job_name,
+            execution_id
+        } = widgetSettings
+        const status = await api.getJobExecutionDetails(origin, api_key, job_name, execution_id)
+        const { status: cStatus, current_step: cStep, request_payload } = status
+        const { styles: rpStyles } = request_payload
+        setStyles(rpStyles)
+        switch (cStatus) {
+            case 'WAIT_FOR_ACTION':
+                return true
+            case 'SUCCEEDED':
+                onClose()
+                return 'Credentials set successfully!'
+            case 'FAILED':
+                return 'Execution failed'
+            case 'RUNNING':
+                return
+            default:
+                return
+        }
+    }
+
+    return (
+        <>
+            {widgetSettings && (
+                <Modal
+                    closeOnOverlayClick={false}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    isCentered
+                    motionPreset="scale"
+                    size={'sm'}
+                >
+                    <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
+                    <ModalContent
+                        borderRadius={0}
+                    >
+                        <ModalHeader>
+                            <b>Please enter your credentials</b>
+                        </ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <FormComponent
+                                fields={WIDGET_FORM_FIELDS}
+                                onFormComplete={onFormComplete}
+                                isLoading={isLoading}
+                                styles={styles}
+                            />
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+            )}
+        </>
     )
 }
