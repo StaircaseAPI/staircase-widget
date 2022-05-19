@@ -62,9 +62,9 @@ var Api = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.request({
                             method: 'POST',
-                            baseURL: baseURL,
+                            baseURL: "https://" + baseURL,
                             headers: { 'x-api-key': apiKey },
-                            url: "/jobs/".concat(job_name, "/executions"),
+                            url: "/job/jobs/".concat(job_name, "/executions"),
                             data: JSON.stringify({
                                 request_payload: request_payload,
                                 callback_url: callback_url,
@@ -79,9 +79,9 @@ var Api = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.request({
                             method: 'GET',
-                            baseURL: baseURL,
+                            baseURL: "https://" + baseURL,
                             headers: { 'x-api-key': apiKey },
-                            url: "/jobs/".concat(job_name, "/executions/").concat(execution_id),
+                            url: "/job/jobs/".concat(job_name, "/executions/").concat(execution_id),
                         })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -92,9 +92,9 @@ var Api = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.request({
                             method: 'POST',
-                            baseURL: baseURL,
+                            baseURL: "https://" + baseURL,
                             headers: { 'x-api-key': apiKey },
-                            url: "/jobs/".concat(job_name, "/executions/").concat(execution_id, "/resume"),
+                            url: "/job/jobs/".concat(job_name, "/executions/").concat(execution_id, "/resume"),
                             data: JSON.stringify(body),
                         })];
                     case 1: return [2 /*return*/, _a.sent()];

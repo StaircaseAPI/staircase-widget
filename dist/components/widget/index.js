@@ -63,9 +63,14 @@ export var WidgetComponent = function (props) {
         if (token) {
             var decodedToken = decodeJWTToken(token);
             setWidgetSettings(decodedToken);
+        }
+    }, []);
+    useEffect(function () {
+        if (widgetSettings) {
             initCheckInvocation();
         }
-    }, [token]);
+    }, [widgetSettings]);
+    console.log({ widgetSettings: widgetSettings });
     // ONCE FORM COMPLETED
     var onFormComplete = function (values) { return __awaiter(void 0, void 0, void 0, function () {
         var origin, api_key, job_name, execution_id;
@@ -98,6 +103,7 @@ export var WidgetComponent = function (props) {
                     return [4 /*yield*/, checkInvocationStatus()];
                 case 2:
                     isFinished = _a.sent();
+                    console.log({ isFinished: isFinished });
                     if (isFinished) {
                         setIsLoading(false);
                         return [2 /*return*/];
@@ -109,7 +115,7 @@ export var WidgetComponent = function (props) {
     }); };
     // CHECK JOB STATUS
     var checkInvocationStatus = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var origin, api_key, job_name, execution_id, status, cStatus, cStep, request_payload, rpStyles;
+        var origin, api_key, job_name, execution_id, status, cStatus, request_payload, rpStyles;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -120,7 +126,7 @@ export var WidgetComponent = function (props) {
                     return [4 /*yield*/, api.getJobExecutionDetails(origin, api_key, job_name, execution_id)];
                 case 1:
                     status = _a.sent();
-                    cStatus = status.status, cStep = status.current_step, request_payload = status.request_payload;
+                    cStatus = status.status, request_payload = status.request_payload;
                     rpStyles = request_payload.styles;
                     setStyles(rpStyles);
                     switch (cStatus) {
