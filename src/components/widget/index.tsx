@@ -95,6 +95,7 @@ export const WidgetComponent = (props: Props) => {
         setStyles(rpStyles)
         switch (cStatus) {
             case 'WAIT_FOR_ACTION':
+                onOpen()
                 return true
             case 'SUCCEEDED':
                 onClose()
