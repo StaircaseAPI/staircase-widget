@@ -31,11 +31,11 @@ interface WidgetSettings {
 
 interface Props {
     token: string
-    onWidgetComplete: (result: any) => any
+    onComplete: (result: any) => any
 }
 
 export const WidgetComponent = (props: Props) => {
-    const { token, onWidgetComplete } = props
+    const { token, onComplete } = props
 
     const { api } = useContext(Context)
 
@@ -107,7 +107,7 @@ export const WidgetComponent = (props: Props) => {
                 return true
             case 'SUCCEEDED':
                 onClose()
-                onWidgetComplete(response_payload)
+                onComplete(response_payload)
                 return 'Credentials set successfully!'
             case 'FAILED':
                 return 'Execution failed'

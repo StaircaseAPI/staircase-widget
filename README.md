@@ -20,6 +20,6 @@ import { Widget } from '@staircase/partner-credentials-widget'
 const token = "YOUR_TOKEN"
 
 const App = () => {
-    return <Widget token={token} onWidgetComplete={() => {console.log("Widget worked")}}/>
+    return <Widget token={token} onComplete={() => {console.log("Widget worked")}}/>
 }
 ```

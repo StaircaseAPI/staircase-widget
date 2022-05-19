@@ -53,7 +53,7 @@ import { WIDGET_FORM_FIELDS } from '../../constants';
 import { decodeJWTToken } from '../helpers';
 import { Context } from '../../context';
 export var WidgetComponent = function (props) {
-    var token = props.token, onWidgetComplete = props.onWidgetComplete;
+    var token = props.token, onComplete = props.onComplete;
     var api = useContext(Context).api;
     var _a = useState(), widgetSettings = _a[0], setWidgetSettings = _a[1];
     var _b = useState(), styles = _b[0], setStyles = _b[1];
@@ -115,7 +115,7 @@ export var WidgetComponent = function (props) {
     }); };
     // CHECK JOB STATUS
     var checkInvocationStatus = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var origin, api_key, job_name, execution_id, status, cStatus, request_payload, rpStyles;
+        var origin, api_key, job_name, execution_id, status, cStatus, request_payload, response_payload, rpStyles;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -126,7 +126,7 @@ export var WidgetComponent = function (props) {
                     return [4 /*yield*/, api.getJobExecutionDetails(origin, api_key, job_name, execution_id)];
                 case 1:
                     status = _a.sent();
-                    cStatus = status.status, request_payload = status.request_payload;
+                    cStatus = status.status, request_payload = status.request_payload, response_payload = status.response_payload;
                     rpStyles = request_payload.styles;
                     setStyles(rpStyles);
                     switch (cStatus) {
@@ -135,6 +135,7 @@ export var WidgetComponent = function (props) {
                             return [2 /*return*/, true];
                         case 'SUCCEEDED':
                             onClose();
+                            onComplete(response_payload);
                             return [2 /*return*/, 'Credentials set successfully!'];
                         case 'FAILED':
                             return [2 /*return*/, 'Execution failed'];
