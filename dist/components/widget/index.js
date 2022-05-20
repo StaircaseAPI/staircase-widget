@@ -53,7 +53,7 @@ import { WIDGET_FORM_FIELDS } from '../../constants';
 import { decodeJWTToken } from '../helpers';
 import { Context } from '../../context';
 export var WidgetComponent = function (props) {
-    var token = props.token, onComplete = props.onComplete;
+    var token = props.token, onComplete = props.onComplete, onError = props.onError;
     var api = useContext(Context).api;
     var _a = useState(), widgetSettings = _a[0], setWidgetSettings = _a[1];
     var _b = useState(), styles = _b[0], setStyles = _b[1];
@@ -138,6 +138,7 @@ export var WidgetComponent = function (props) {
                             onComplete(response_payload);
                             return [2 /*return*/, 'Credentials set successfully!'];
                         case 'FAILED':
+                            onError();
                             return [2 /*return*/, 'Execution failed'];
                         case 'RUNNING':
                             return [2 /*return*/];

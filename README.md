@@ -14,12 +14,21 @@ Provides React components to use.
 
 ## Examples of usage
 
+### JS
+```js
+import { renderWidget } from '@staircase/partner-credentials-widget'
+
+const token = "YOUR_TOKEN"
+renderWidget(document.getElementById('root'), token, ()=>{console.log("Widget worked"), ()=>{console.log("Widget Error")}})
+```
+
+### React
 ```js
 import { Widget } from '@staircase/partner-credentials-widget'
 
 const token = "YOUR_TOKEN"
 
 const App = () => {
-    return <Widget token={token} onComplete={() => {console.log("Widget worked")}}/>
+    return <Widget token={token} onComplete={() => {console.log("Widget worked")} onError={()=>{}}}/>
 }
 ```
