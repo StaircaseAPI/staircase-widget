@@ -14,6 +14,8 @@ Provides React components to use.
 
 ## Examples of usage
 
+Note, to get `token` use this endpoint https://api.staircase.co/docs/Mortgage%20Products/Borrower/Employment/partnerWidgetToken#root
+
 ### JS
 ```js
 import { renderWidget } from '@staircase/partner-credentials-widget'
