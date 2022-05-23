@@ -11,6 +11,7 @@ import {
 
 import { ColorPicker } from './form_controls/color'
 import { Field } from "../widget/form_fields";
+import { FileUploader } from "react-drag-drop-files";
 
 interface Props {
     fields: Field[]
@@ -36,7 +37,15 @@ export const FormComponent = ({
         <form onSubmit={handleSubmit(onFormComplete)}>
             {fields.map(
                 (
-                    { name, placeholder, type, validation, label, options },
+                    {
+                        name,
+                        placeholder,
+                        type,
+                        validation,
+                        label,
+                        options,
+                        types
+                    },
                     index
                 ) => {
                     {
@@ -53,10 +62,13 @@ export const FormComponent = ({
                                             color='#000000'
                                             fontSize='16px'
                                         >{label}</Text>
-                                        <Input
-                                            id={name}
-                                            placeholder={placeholder}
-                                            {...register(name, validation)}
+                                        <FileUploader
+                                            id="fileUploader"
+                                            handleChange={(ev: File) => setValue(name, ev)}
+                                            name="file"
+                                            types={types}
+                                            label="Drag or Click here to upload"
+                                            multiple={false}
                                         />
                                         <FormErrorMessage>
                                             {errors.name && errors.name.message}
@@ -106,6 +118,12 @@ export const FormComponent = ({
                                             type="password"
                                             id={name}
                                             placeholder={placeholder}
+                                            style={styles.input ? styles.input : undefined}
+                                            _hover={styles['input:hover'] ? styles.submitButton['input:hover'] : undefined}
+                                            _focus={styles['input:focus'] ? styles.submitButton['input:focus'] : undefined}
+                                            _focusWithin={styles['input:focusWithin'] ? styles.submitButton['input:focusWithin'] : undefined}
+                                            _active={styles['input:active'] ? styles.submitButton['input:active'] : undefined}
+                                            _visited={styles['input:visited'] ? styles.submitButton['input:visited'] : undefined}
                                             borderRadius={0}
                                             padding='12px 20px'
                                             fontSize='12px'

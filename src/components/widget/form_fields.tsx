@@ -10,6 +10,7 @@ export interface Field {
     options?: string[]
     disabled?: boolean
     defaultValue?: string
+    types?: string[]
 }
 
 const EMPLOYMENT_EQUIFAX_FIELDS: Field[] = [
@@ -36,6 +37,16 @@ const EMPLOYMENT_EQUIFAX_FIELDS: Field[] = [
         name: 'pfx_certificate_password',
         placeholder: 'Enter PFX Certificate Password',
         type: 'password',
+        validation: {
+            required: 'This is required',
+        },
+    },
+    {
+        label: 'PFX Certificate',
+        name: 'pfx_certificate',
+        placeholder: 'Upload Certificate',
+        type: 'file',
+        types: ['pfx'],
         validation: {
             required: 'This is required',
         },

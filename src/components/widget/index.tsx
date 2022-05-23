@@ -1,5 +1,5 @@
 import { ThemeTypings } from '@chakra-ui/styled-system'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
     ChakraProvider,
@@ -15,7 +15,7 @@ import {
 import { FormComponent } from '../form'
 import { GET_FORM_FIELDS } from './form_fields'
 import { decodeJWTToken } from '../helpers'
-import { Context } from '../../context'
+import { Api } from "../../api";
 
 interface WidgetSettings {
     bg_color: ThemeTypings['colorSchemes']
@@ -38,38 +38,71 @@ interface Props {
 export const WidgetComponent = (props: Props) => {
     const { token, onComplete, onError } = props
 
-    const { api } = useContext(Context)
-
     const [widgetSettings, setWidgetSettings] = useState<WidgetSettings>()
-
     const [styles, setStyles] = useState<any>()
+    const [requestPayload, setRequestPayload] = useState<any>()
+    const [api, setApi] = useState<any>()
+    const [outputs, setOutputs] = useState<any>()
+    const [product, setProduct] = useState<string>()
+    const [partner, setPartner] = useState<string>()
     const [isLoading, setIsLoading] = useState(false)
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     useEffect(() => {
-        if (token) {
-            const decodedToken: any = decodeJWTToken(token)
-            setWidgetSettings(decodedToken)
-        }
+        const decodedToken: any = decodeJWTToken(token)
+        setWidgetSettings(decodedToken)
     }, [])
 
     useEffect(() => {
         if (widgetSettings) {
-            initCheckInvocation()
+            if (!requestPayload) {
+                setInvocationRequestPayload()
+            }
+            if (!api) {
+                const { origin, api_key } = widgetSettings
+                setApi(new Api(origin, api_key))
+            }
         }
     }, [widgetSettings])
 
-    console.log({ widgetSettings })
+    useEffect(() => {
+        if (requestPayload) {
+            const { styles: rpStyles, product, partner } = requestPayload
+            setStyles(rpStyles)
+            setProduct(product)
+            setPartner(partner)
+        }
+    }, [requestPayload])
+
+    useEffect(() => {
+        if (product && partner) {
+            onOpen()
+            initCheckInvocation()
+        }
+    }, [product, partner])
 
     // ONCE FORM COMPLETED
     const onFormComplete = async (values: any) => {
         if (!widgetSettings) {
             return
         }
-        const { origin, api_key, job_name, execution_id } = widgetSettings
-        await api.resumeJob(origin, api_key, job_name, execution_id, {
-            type: 'test',
+        const { job_name, execution_id } = widgetSettings
+        if (values.includes('pfx_certificate')) {
+            try {
+                const {
+                    url
+                } = outputs.CreateBlob.response_payloadpresigned_urls.upload
+                await api.uploadFile(url, values['pfx_certificate'])
+                delete values['pfx_certificate']
+            } catch (err) {
+
+            }
+        }
+
+        await api.resumeJob(job_name, execution_id, {
+            type: 'production',
+            contract: 'BYOC',
             ...values,
         })
         await initCheckInvocation()
@@ -79,7 +112,6 @@ export const WidgetComponent = (props: Props) => {
         setIsLoading(true)
         while (true) {
             const isFinished = await checkInvocationStatus()
-            console.log({ isFinished })
             if (isFinished) {
                 setIsLoading(false)
                 return
@@ -92,20 +124,18 @@ export const WidgetComponent = (props: Props) => {
         if (!widgetSettings) {
             return
         }
-        const { origin, api_key, job_name, execution_id } = widgetSettings
-        const status = await api.getJobExecutionDetails(
-            origin,
-            api_key,
+        const { job_name, execution_id } = widgetSettings
+        const {
+            status: cStatus,
+            response_payload,
+            outputs
+        } = await api.getJobExecutionDetails(
             job_name,
             execution_id
         )
-        const { status: cStatus, request_payload, response_payload } = status
-        const { styles: rpStyles } = request_payload
-        setStyles(rpStyles)
+        setOutputs(outputs)
+
         switch (cStatus) {
-            case 'WAIT_FOR_ACTION':
-                onOpen()
-                return true
             case 'SUCCEEDED':
                 onClose()
                 onComplete(response_payload)
@@ -119,10 +149,24 @@ export const WidgetComponent = (props: Props) => {
                 return
         }
     }
+    // SET JOB REQUEST PAYLOAD
+    const setInvocationRequestPayload = async () => {
+        if (!widgetSettings) {
+            return
+        }
+        const { job_name, execution_id } = widgetSettings
+        const {
+            request_payload
+        } = await api.getJobExecutionDetails(
+            job_name,
+            execution_id
+        )
+        setRequestPayload(request_payload)
+    }
 
     return (
         <ChakraProvider>
-            {widgetSettings && (
+            {widgetSettings && product && partner && (
                 <Modal
                     closeOnOverlayClick={false}
                     isOpen={isOpen}
@@ -143,7 +187,7 @@ export const WidgetComponent = (props: Props) => {
                         <ModalCloseButton />
                         <ModalBody>
                             <FormComponent
-                                fields={GET_FORM_FIELDS(widgetSettings.product, widgetSettings.partner)}
+                                fields={GET_FORM_FIELDS(product, partner)}
                                 onFormComplete={onFormComplete}
                                 isLoading={isLoading}
                                 styles={styles}

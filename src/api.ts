@@ -2,24 +2,16 @@ import { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 
-const RETRY_DELAY_LENGTH_MS = 2000
-const MAX_REQ_TRIES = 5
+const RETRY_DELAY_LENGTH_MS = 1000
+const MAX_REQ_TRIES = 2
 
 export class Api {
     axios: AxiosInstance
 
-    domain = window.location.host.includes('localhost')
-        ? 'borrower.staircaseapi.com'
-        : // ? 'console-dev.staircaseapi.com'
-          window.location.host
-
-    apiKey = '2564a812-dcc8-4923-a1d3-838c8d67fb6b'
-    // apiKey = 'f7ba8e2e-0d82-43ac-bd20-9789a4f50473'
-
-    constructor() {
+    constructor(domain: string, apiKey: string) {
         this.axios = axios.create({
-            baseURL: `https://${this.domain}`,
-            headers: { 'x-api-key': this.apiKey },
+            baseURL: `https://${domain}`,
+            headers: { 'x-api-key': apiKey },
         })
 
         axiosRetry(this.axios, {
@@ -40,16 +32,12 @@ export class Api {
     }
 
     invokeJob = async (
-        baseURL: string,
-        apiKey: string,
         job_name: string,
         request_payload: any,
         callback_url?: string
     ) => {
         return await this.request({
             method: 'POST',
-            baseURL: "https://" + baseURL,
-            headers: { 'x-api-key': apiKey },
             url: `/job/jobs/${job_name}/executions`,
             data: JSON.stringify({
                 request_payload,
@@ -59,32 +47,32 @@ export class Api {
     }
 
     getJobExecutionDetails = async (
-        baseURL: string,
-        apiKey: string,
         job_name: string,
         execution_id: string
     ) => {
         return await this.request({
             method: 'GET',
-            baseURL: "https://" + baseURL,
-            headers: { 'x-api-key': apiKey },
             url: `/job/jobs/${job_name}/executions/${execution_id}`,
         })
     }
 
     resumeJob = async (
-        baseURL: string,
-        apiKey: string,
         job_name: string,
         execution_id: string,
         body: any
     ) => {
         return await this.request({
             method: 'POST',
-            baseURL: "https://" + baseURL,
-            headers: { 'x-api-key': apiKey },
             url: `/job/jobs/${job_name}/executions/${execution_id}/resume`,
             data: JSON.stringify(body),
+        })
+    }
+
+    uploadFile = async (url: string, file: any) => {
+        return await fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': file.type },
+            body: file,
         })
     }
 }
