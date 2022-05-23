@@ -57,12 +57,11 @@ export var WidgetComponent = function (props) {
     var _a = useState(), widgetSettings = _a[0], setWidgetSettings = _a[1];
     var _b = useState(), styles = _b[0], setStyles = _b[1];
     var _c = useState(), requestPayload = _c[0], setRequestPayload = _c[1];
-    var _d = useState(), api = _d[0], setApi = _d[1];
-    var _e = useState(), outputs = _e[0], setOutputs = _e[1];
-    var _f = useState(), product = _f[0], setProduct = _f[1];
-    var _g = useState(), partner = _g[0], setPartner = _g[1];
-    var _h = useState(false), isLoading = _h[0], setIsLoading = _h[1];
-    var _j = useDisclosure(), isOpen = _j.isOpen, onOpen = _j.onOpen, onClose = _j.onClose;
+    var _d = useState(), outputs = _d[0], setOutputs = _d[1];
+    var _e = useState(), product = _e[0], setProduct = _e[1];
+    var _f = useState(), partner = _f[0], setPartner = _f[1];
+    var _g = useState(false), isLoading = _g[0], setIsLoading = _g[1];
+    var _h = useDisclosure(), isOpen = _h.isOpen, onOpen = _h.onOpen, onClose = _h.onClose;
     useEffect(function () {
         var decodedToken = decodeJWTToken(token);
         setWidgetSettings(decodedToken);
@@ -71,10 +70,6 @@ export var WidgetComponent = function (props) {
         if (widgetSettings) {
             if (!requestPayload) {
                 setInvocationRequestPayload();
-            }
-            if (!api) {
-                var origin_1 = widgetSettings.origin, api_key = widgetSettings.api_key;
-                setApi(new Api(origin_1, api_key));
             }
         }
     }, [widgetSettings]);
@@ -94,15 +89,16 @@ export var WidgetComponent = function (props) {
     }, [product, partner]);
     // ONCE FORM COMPLETED
     var onFormComplete = function (values) { return __awaiter(void 0, void 0, void 0, function () {
-        var job_name, execution_id, url, err_1;
+        var origin, api_key, job_name, execution_id, api, url, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     if (!widgetSettings) {
                         return [2 /*return*/];
                     }
-                    job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id;
-                    if (!values.includes('pfx_certificate')) return [3 /*break*/, 4];
+                    origin = widgetSettings.origin, api_key = widgetSettings.api_key, job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id;
+                    api = new Api(origin, api_key);
+                    if (!('pfx_certificate' in values)) return [3 /*break*/, 4];
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
@@ -148,14 +144,15 @@ export var WidgetComponent = function (props) {
     }); };
     // CHECK JOB STATUS
     var checkInvocationStatus = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var job_name, execution_id, _a, cStatus, response_payload, outputs;
+        var job_name, execution_id, origin, api_key, api, _a, cStatus, response_payload, outputs;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     if (!widgetSettings) {
                         return [2 /*return*/];
                     }
-                    job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id;
+                    job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id, origin = widgetSettings.origin, api_key = widgetSettings.api_key;
+                    api = new Api(origin, api_key);
                     return [4 /*yield*/, api.getJobExecutionDetails(job_name, execution_id)];
                 case 1:
                     _a = _b.sent(), cStatus = _a.status, response_payload = _a.response_payload, outputs = _a.outputs;
@@ -170,6 +167,8 @@ export var WidgetComponent = function (props) {
                             return [2 /*return*/, 'Execution failed'];
                         case 'RUNNING':
                             return [2 /*return*/];
+                        case 'WAIT_FOR_ACTION':
+                            return [2 /*return*/, true];
                         default:
                             return [2 /*return*/];
                     }
@@ -179,14 +178,15 @@ export var WidgetComponent = function (props) {
     }); };
     // SET JOB REQUEST PAYLOAD
     var setInvocationRequestPayload = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var job_name, execution_id, request_payload;
+        var job_name, execution_id, origin, api_key, api, request_payload;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     if (!widgetSettings) {
                         return [2 /*return*/];
                     }
-                    job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id;
+                    job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id, origin = widgetSettings.origin, api_key = widgetSettings.api_key;
+                    api = new Api(origin, api_key);
                     return [4 /*yield*/, api.getJobExecutionDetails(job_name, execution_id)];
                 case 1:
                     request_payload = (_a.sent()).request_payload;
@@ -195,5 +195,5 @@ export var WidgetComponent = function (props) {
             }
         });
     }); };
-    return (_jsx(ChakraProvider, { children: widgetSettings && product && partner && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }), _jsxs(ModalContent, __assign({ borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx("b", __assign({ style: (styles === null || styles === void 0 ? void 0 : styles.title) ? styles.title : undefined }, { children: "Please enter your credentials" })) }), _jsx(ModalCloseButton, {}), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: GET_FORM_FIELDS(product, partner), onFormComplete: onFormComplete, isLoading: isLoading, styles: styles }) })] }))] }))) }));
+    return (_jsx(ChakraProvider, { children: widgetSettings && product && partner && styles && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }), _jsxs(ModalContent, __assign({ style: (styles === null || styles === void 0 ? void 0 : styles.root) ? styles.root : undefined, borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx("b", __assign({ style: (styles === null || styles === void 0 ? void 0 : styles.title) ? styles.title : undefined }, { children: "Please enter your credentials" })) }), _jsx(ModalCloseButton, {}), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: GET_FORM_FIELDS(product, partner), onFormComplete: onFormComplete, isLoading: isLoading, styles: styles }) })] }))] }))) }));
 };

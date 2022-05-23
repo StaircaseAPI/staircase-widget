@@ -89,11 +89,11 @@ export const FormComponent = ({
                                             id={name}
                                             placeholder={placeholder}
                                             style={styles.input ? styles.input : undefined}
-                                            _hover={styles['input:hover'] ? styles.submitButton['input:hover'] : undefined}
-                                            _focus={styles['input:focus'] ? styles.submitButton['input:focus'] : undefined}
-                                            _focusWithin={styles['input:focusWithin'] ? styles.submitButton['input:focusWithin'] : undefined}
-                                            _active={styles['input:active'] ? styles.submitButton['input:active'] : undefined}
-                                            _visited={styles['input:visited'] ? styles.submitButton['input:visited'] : undefined}
+                                            _hover={styles['input:hover'] ? styles['input:hover'] : undefined}
+                                            _focus={styles['input:focus'] ? styles['input:focus'] : undefined}
+                                            _focusWithin={styles['input:focusWithin'] ? styles['input:focusWithin'] : undefined}
+                                            _active={styles['input:active'] ? styles['input:active'] : undefined}
+                                            _visited={styles['input:visited'] ? styles['input:visited'] : undefined}
                                             borderRadius={0}
                                             padding='12px 20px'
                                             fontSize='12px'
@@ -210,7 +210,7 @@ export const FormComponent = ({
                 _hover={styles['submitButton:hover'] ? styles.submitButton['submitButton:hover'] : {
                     bg: '#04aa6dc7',
                 }}
-                isLoading={isSubmitting || isLoading}
+                isLoading={isSubmitting}
             >
                 Save
             </Button>

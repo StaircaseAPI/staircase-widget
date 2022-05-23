@@ -1,4 +1,3 @@
-import { ThemeTypings } from '@chakra-ui/styled-system'
 import { useEffect, useState } from 'react'
 
 import {
@@ -18,11 +17,6 @@ import { decodeJWTToken } from '../helpers'
 import { Api } from "../../api";
 
 interface WidgetSettings {
-    bg_color: ThemeTypings['colorSchemes']
-    button_bg_color: ThemeTypings['colorSchemes']
-    partner: 'Equifax' | string
-    product: 'Employment' | string
-    title: string
     origin: string
     api_key: string
     job_name: string
@@ -41,7 +35,6 @@ export const WidgetComponent = (props: Props) => {
     const [widgetSettings, setWidgetSettings] = useState<WidgetSettings>()
     const [styles, setStyles] = useState<any>()
     const [requestPayload, setRequestPayload] = useState<any>()
-    const [api, setApi] = useState<any>()
     const [outputs, setOutputs] = useState<any>()
     const [product, setProduct] = useState<string>()
     const [partner, setPartner] = useState<string>()
@@ -58,10 +51,6 @@ export const WidgetComponent = (props: Props) => {
         if (widgetSettings) {
             if (!requestPayload) {
                 setInvocationRequestPayload()
-            }
-            if (!api) {
-                const { origin, api_key } = widgetSettings
-                setApi(new Api(origin, api_key))
             }
         }
     }, [widgetSettings])
@@ -87,8 +76,9 @@ export const WidgetComponent = (props: Props) => {
         if (!widgetSettings) {
             return
         }
-        const { job_name, execution_id } = widgetSettings
-        if (values.includes('pfx_certificate')) {
+        const { origin, api_key, job_name, execution_id } = widgetSettings
+        const api = new Api(origin, api_key)
+        if ('pfx_certificate' in values) {
             try {
                 const {
                     url
@@ -124,7 +114,8 @@ export const WidgetComponent = (props: Props) => {
         if (!widgetSettings) {
             return
         }
-        const { job_name, execution_id } = widgetSettings
+        const { job_name, execution_id, origin, api_key } = widgetSettings
+        const api = new Api(origin, api_key)
         const {
             status: cStatus,
             response_payload,
@@ -145,6 +136,8 @@ export const WidgetComponent = (props: Props) => {
                 return 'Execution failed'
             case 'RUNNING':
                 return
+            case 'WAIT_FOR_ACTION':
+                return true
             default:
                 return
         }
@@ -154,7 +147,8 @@ export const WidgetComponent = (props: Props) => {
         if (!widgetSettings) {
             return
         }
-        const { job_name, execution_id } = widgetSettings
+        const { job_name, execution_id, origin, api_key } = widgetSettings
+        const api = new Api(origin, api_key)
         const {
             request_payload
         } = await api.getJobExecutionDetails(
@@ -166,7 +160,7 @@ export const WidgetComponent = (props: Props) => {
 
     return (
         <ChakraProvider>
-            {widgetSettings && product && partner && (
+            {widgetSettings && product && partner && styles && (
                 <Modal
                     closeOnOverlayClick={false}
                     isOpen={isOpen}
@@ -176,7 +170,9 @@ export const WidgetComponent = (props: Props) => {
                     size={'sm'}
                 >
                     <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
-                    <ModalContent borderRadius={0}>
+                    <ModalContent
+                        style={styles?.root ? styles.root : undefined}
+                        borderRadius={0}>
                         <ModalHeader>
                             <b
                                 style={styles?.title ? styles.title : undefined}
