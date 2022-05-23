@@ -49,7 +49,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useContext, useEffect, useState } from 'react';
 import { ChakraProvider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure, } from '@chakra-ui/react';
 import { FormComponent } from '../form';
-import { WIDGET_FORM_FIELDS } from '../../constants';
+import { GET_FORM_FIELDS } from './form_fields';
 import { decodeJWTToken } from '../helpers';
 import { Context } from '../../context';
 export var WidgetComponent = function (props) {
@@ -149,5 +149,5 @@ export var WidgetComponent = function (props) {
             }
         });
     }); };
-    return (_jsx(ChakraProvider, { children: widgetSettings && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }, void 0), _jsxs(ModalContent, __assign({ borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx("b", { children: "Please enter your credentials" }, void 0) }, void 0), _jsx(ModalCloseButton, {}, void 0), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: WIDGET_FORM_FIELDS, onFormComplete: onFormComplete, isLoading: isLoading, styles: styles }, void 0) }, void 0)] }), void 0)] }), void 0)) }, void 0));
+    return (_jsx(ChakraProvider, { children: widgetSettings && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }), _jsxs(ModalContent, __assign({ borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx("b", __assign({ style: (styles === null || styles === void 0 ? void 0 : styles.title) ? styles.title : undefined }, { children: "Please enter your credentials" })) }), _jsx(ModalCloseButton, {}), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: GET_FORM_FIELDS(widgetSettings.product, widgetSettings.partner), onFormComplete: onFormComplete, isLoading: isLoading, styles: styles }) })] }))] }))) }));
 };

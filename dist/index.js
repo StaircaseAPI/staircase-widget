@@ -3,7 +3,7 @@ import { WidgetComponent } from './components';
 import ReactDOM from 'react-dom/client';
 export var renderWidget = function (element, token, onComplete, onError) {
     var root = ReactDOM.createRoot(element);
-    root.render(_jsx(WidgetComponent, { token: token, onComplete: onComplete, onError: onError }, void 0));
+    root.render(_jsx(WidgetComponent, { token: token, onComplete: onComplete, onError: onError }));
 };
 //render_widget(
 //document.getElementById('root') as HTMLElement,

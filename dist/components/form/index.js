@@ -21,24 +21,24 @@ export var FormComponent = function (_a) {
                 {
                     switch (type) {
                         case 'file':
-                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(Text, __assign({ color: '#000000', fontSize: '16px' }, { children: label }), void 0), _jsx(Input, __assign({ id: name, placeholder: placeholder }, register(name, validation)), void 0), _jsx(FormErrorMessage, { children: errors.name && errors.name.message }, void 0)] }), index));
+                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(Text, __assign({ style: styles.inputLabel ? styles.inputLabel : undefined, color: '#000000', fontSize: '16px' }, { children: label })), _jsx(Input, __assign({ id: name, placeholder: placeholder }, register(name, validation))), _jsx(FormErrorMessage, { children: errors.name && errors.name.message })] }), index));
                         case 'string':
-                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(FormLabel, __assign({ htmlFor: name }, { children: label }), void 0), _jsx(Input, __assign({ id: name, placeholder: placeholder, borderRadius: 0, padding: '12px 20px', fontSize: '12px' }, register(name, validation)), void 0), _jsx(FormErrorMessage, { children: errors.name && errors.name.message }, void 0)] }), index));
+                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(FormLabel, __assign({ htmlFor: name }, { children: label })), _jsx(Input, __assign({ id: name, placeholder: placeholder, style: styles.input ? styles.input : undefined, _hover: styles['input:hover'] ? styles.submitButton['input:hover'] : undefined, _focus: styles['input:focus'] ? styles.submitButton['input:focus'] : undefined, _focusWithin: styles['input:focusWithin'] ? styles.submitButton['input:focusWithin'] : undefined, _active: styles['input:active'] ? styles.submitButton['input:active'] : undefined, _visited: styles['input:visited'] ? styles.submitButton['input:visited'] : undefined, borderRadius: 0, padding: '12px 20px', fontSize: '12px' }, register(name, validation))), _jsx(FormErrorMessage, { children: errors.name && errors.name.message })] }), index));
                         case 'password':
-                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(FormLabel, __assign({ htmlFor: name }, { children: label }), void 0), _jsx(Input, __assign({ type: "password", id: name, placeholder: placeholder, borderRadius: 0, padding: '12px 20px', fontSize: '12px' }, register(name, validation)), void 0), _jsx(FormErrorMessage, { children: errors.name && errors.name.message }, void 0)] }), index));
+                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(FormLabel, __assign({ htmlFor: name }, { children: label })), _jsx(Input, __assign({ type: "password", id: name, placeholder: placeholder, borderRadius: 0, padding: '12px 20px', fontSize: '12px' }, register(name, validation))), _jsx(FormErrorMessage, { children: errors.name && errors.name.message })] }), index));
                         case 'select':
-                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(FormLabel, __assign({ htmlFor: name }, { children: label }), void 0), _jsx(Select, __assign({ id: name, variant: "filled", placeholder: placeholder }, register(name, validation), { children: _jsx(_Fragment, { children: options === null || options === void 0 ? void 0 : options.map(function (option, key) {
+                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(FormLabel, __assign({ htmlFor: name }, { children: label })), _jsx(Select, __assign({ id: name, variant: "filled", placeholder: placeholder }, register(name, validation), { children: _jsx(_Fragment, { children: options === null || options === void 0 ? void 0 : options.map(function (option, key) {
                                                 return (_jsx("option", __assign({ value: option }, { children: option }), key));
-                                            }) }, void 0) }), void 0), _jsx(FormErrorMessage, { children: errors.name && errors.name.message }, void 0)] }), index));
+                                            }) }) })), _jsx(FormErrorMessage, { children: errors.name && errors.name.message })] }), index));
                         case 'color':
-                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(FormLabel, __assign({ htmlFor: name }, { children: label }), void 0), _jsx(ColorPicker, { onColorPick: function (color) {
+                            return (_jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(FormLabel, __assign({ htmlFor: name }, { children: label })), _jsx(ColorPicker, { onColorPick: function (color) {
                                             setValue(name, color);
-                                        } }, void 0), _jsx(FormErrorMessage, { children: errors.name && errors.name.message }, void 0)] }), index));
+                                        } }), _jsx(FormErrorMessage, { children: errors.name && errors.name.message })] }), index));
                         default:
                             break;
                     }
                 }
             }), _jsx(Button, __assign({ w: "100%", my: "15px", bg: !styles.submitButton ? '#04aa6d' : undefined, borderRadius: 0, variant: "solid", type: "submit", style: styles.submitButton ? styles.submitButton : undefined, _hover: styles['submitButton:hover'] ? styles.submitButton['submitButton:hover'] : {
                     bg: '#04aa6dc7',
-                }, isLoading: isSubmitting || isLoading }, { children: "Save" }), void 0)] }), void 0));
+                }, isLoading: isSubmitting || isLoading }, { children: "Save" }))] })));
 };

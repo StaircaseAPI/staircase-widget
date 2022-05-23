@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { Field } from '../../constants';
+import { Field } from "../widget/form_fields";
 interface Props {
     fields: Field[];
     onFormComplete: any;
