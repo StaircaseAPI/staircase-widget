@@ -29,7 +29,6 @@ export class Api {
                 return true
             },
             retryDelay: (retryCount) => {
-                console.log(retryCount)
                 return RETRY_DELAY_LENGTH_MS
             },
         })
