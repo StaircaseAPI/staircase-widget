@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 
 import {
-    ChakraProvider,
+    ChakraProvider, Flex,
     Modal,
     ModalBody,
     ModalCloseButton,
     ModalContent,
     ModalHeader,
-    ModalOverlay,
+    ModalOverlay, Spinner,
     useDisclosure,
 } from '@chakra-ui/react'
 
@@ -27,6 +27,10 @@ interface Props {
     token: string
     onComplete: (result: any) => any
     onError: () => any
+}
+
+export const sleep = (ms: any) => {
+    return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export const WidgetComponent = (props: Props) => {
@@ -50,7 +54,8 @@ export const WidgetComponent = (props: Props) => {
     useEffect(() => {
         if (widgetSettings) {
             if (!requestPayload) {
-                setInvocationRequestPayload()
+                setIsLoading(true)
+                setInvocationRequestPayload().then(() => setIsLoading(false))
             }
         }
     }, [widgetSettings])
@@ -82,11 +87,11 @@ export const WidgetComponent = (props: Props) => {
             try {
                 const {
                     url
-                } = outputs.CreateBlob.response_payloadpresigned_urls.upload
+                } = outputs.CreateBlob.response_payload.presigned_urls.upload
                 await api.uploadFile(url, values['pfx_certificate'])
                 delete values['pfx_certificate']
             } catch (err) {
-
+                console.log({err})
             }
         }
 
@@ -99,13 +104,12 @@ export const WidgetComponent = (props: Props) => {
     }
 
     const initCheckInvocation = async () => {
-        setIsLoading(true)
         while (true) {
             const isFinished = await checkInvocationStatus()
             if (isFinished) {
-                setIsLoading(false)
                 return
             }
+            await sleep(1500)
         }
     }
 
@@ -160,7 +164,15 @@ export const WidgetComponent = (props: Props) => {
 
     return (
         <ChakraProvider>
-            {widgetSettings && product && partner && styles && (
+            {isLoading ? <Spinner
+                thickness="6px"
+                size="xl"
+                style={{
+                    position: 'absolute',
+                    top: 'calc(50% - 4em)',
+                    left: 'calc(50% - 4em)',
+                }}
+            /> : widgetSettings && product && partner && styles && (
                 <Modal
                     closeOnOverlayClick={false}
                     isOpen={isOpen}

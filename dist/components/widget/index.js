@@ -47,11 +47,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from 'react';
-import { ChakraProvider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure, } from '@chakra-ui/react';
+import { ChakraProvider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, useDisclosure, } from '@chakra-ui/react';
 import { FormComponent } from '../form';
 import { GET_FORM_FIELDS } from './form_fields';
 import { decodeJWTToken } from '../helpers';
 import { Api } from "../../api";
+export var sleep = function (ms) {
+    return new Promise(function (resolve) { return setTimeout(resolve, ms); });
+};
 export var WidgetComponent = function (props) {
     var token = props.token, onComplete = props.onComplete, onError = props.onError;
     var _a = useState(), widgetSettings = _a[0], setWidgetSettings = _a[1];
@@ -69,7 +72,8 @@ export var WidgetComponent = function (props) {
     useEffect(function () {
         if (widgetSettings) {
             if (!requestPayload) {
-                setInvocationRequestPayload();
+                setIsLoading(true);
+                setInvocationRequestPayload().then(function () { return setIsLoading(false); });
             }
         }
     }, [widgetSettings]);
@@ -102,7 +106,7 @@ export var WidgetComponent = function (props) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    url = outputs.CreateBlob.response_payloadpresigned_urls.upload.url;
+                    url = outputs.CreateBlob.response_payload.presigned_urls.upload.url;
                     return [4 /*yield*/, api.uploadFile(url, values['pfx_certificate'])];
                 case 2:
                     _a.sent();
@@ -110,6 +114,7 @@ export var WidgetComponent = function (props) {
                     return [3 /*break*/, 4];
                 case 3:
                     err_1 = _a.sent();
+                    console.log({ err: err_1 });
                     return [3 /*break*/, 4];
                 case 4: return [4 /*yield*/, api.resumeJob(job_name, execution_id, __assign({ type: 'production', contract: 'BYOC' }, values))];
                 case 5:
@@ -126,18 +131,17 @@ export var WidgetComponent = function (props) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    setIsLoading(true);
-                    _a.label = 1;
-                case 1:
                     if (!true) return [3 /*break*/, 3];
                     return [4 /*yield*/, checkInvocationStatus()];
-                case 2:
+                case 1:
                     isFinished = _a.sent();
                     if (isFinished) {
-                        setIsLoading(false);
                         return [2 /*return*/];
                     }
-                    return [3 /*break*/, 1];
+                    return [4 /*yield*/, sleep(1500)];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 0];
                 case 3: return [2 /*return*/];
             }
         });
@@ -195,5 +199,9 @@ export var WidgetComponent = function (props) {
             }
         });
     }); };
-    return (_jsx(ChakraProvider, { children: widgetSettings && product && partner && styles && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }), _jsxs(ModalContent, __assign({ style: (styles === null || styles === void 0 ? void 0 : styles.root) ? styles.root : undefined, borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx("b", __assign({ style: (styles === null || styles === void 0 ? void 0 : styles.title) ? styles.title : undefined }, { children: "Please enter your credentials" })) }), _jsx(ModalCloseButton, {}), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: GET_FORM_FIELDS(product, partner), onFormComplete: onFormComplete, isLoading: isLoading, styles: styles }) })] }))] }))) }));
+    return (_jsx(ChakraProvider, { children: isLoading ? _jsx(Spinner, { thickness: "6px", size: "xl", style: {
+                position: 'absolute',
+                top: 'calc(50% - 4em)',
+                left: 'calc(50% - 4em)',
+            } }) : widgetSettings && product && partner && styles && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }), _jsxs(ModalContent, __assign({ style: (styles === null || styles === void 0 ? void 0 : styles.root) ? styles.root : undefined, borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx("b", __assign({ style: (styles === null || styles === void 0 ? void 0 : styles.title) ? styles.title : undefined }, { children: "Please enter your credentials" })) }), _jsx(ModalCloseButton, {}), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: GET_FORM_FIELDS(product, partner), onFormComplete: onFormComplete, isLoading: isLoading, styles: styles }) })] }))] }))) }));
 };
