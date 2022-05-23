@@ -36,17 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-var RETRY_DELAY_LENGTH_MS = 2000;
-var MAX_REQ_TRIES = 5;
+var RETRY_DELAY_LENGTH_MS = 1000;
+var MAX_REQ_TRIES = 2;
 var Api = /** @class */ (function () {
-    // apiKey = 'f7ba8e2e-0d82-43ac-bd20-9789a4f50473'
-    function Api() {
+    function Api(domain, apiKey) {
         var _this = this;
-        this.domain = window.location.host.includes('localhost')
-            ? 'borrower.staircaseapi.com'
-            : // ? 'console-dev.staircaseapi.com'
-                window.location.host;
-        this.apiKey = '2564a812-dcc8-4923-a1d3-838c8d67fb6b';
         this.request = function (config) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -57,13 +51,11 @@ var Api = /** @class */ (function () {
                 }
             });
         }); };
-        this.invokeJob = function (baseURL, apiKey, job_name, request_payload, callback_url) { return __awaiter(_this, void 0, void 0, function () {
+        this.invokeJob = function (job_name, request_payload, callback_url) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.request({
                             method: 'POST',
-                            baseURL: "https://" + baseURL,
-                            headers: { 'x-api-key': apiKey },
                             url: "/job/jobs/".concat(job_name, "/executions"),
                             data: JSON.stringify({
                                 request_payload: request_payload,
@@ -74,26 +66,22 @@ var Api = /** @class */ (function () {
                 }
             });
         }); };
-        this.getJobExecutionDetails = function (baseURL, apiKey, job_name, execution_id) { return __awaiter(_this, void 0, void 0, function () {
+        this.getJobExecutionDetails = function (job_name, execution_id) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.request({
                             method: 'GET',
-                            baseURL: "https://" + baseURL,
-                            headers: { 'x-api-key': apiKey },
                             url: "/job/jobs/".concat(job_name, "/executions/").concat(execution_id),
                         })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         }); };
-        this.resumeJob = function (baseURL, apiKey, job_name, execution_id, body) { return __awaiter(_this, void 0, void 0, function () {
+        this.resumeJob = function (job_name, execution_id, body) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.request({
                             method: 'POST',
-                            baseURL: "https://" + baseURL,
-                            headers: { 'x-api-key': apiKey },
                             url: "/job/jobs/".concat(job_name, "/executions/").concat(execution_id, "/resume"),
                             data: JSON.stringify(body),
                         })];
@@ -101,9 +89,21 @@ var Api = /** @class */ (function () {
                 }
             });
         }); };
+        this.uploadFile = function (url, file) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fetch(url, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': file.type },
+                            body: file,
+                        })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        }); };
         this.axios = axios.create({
-            baseURL: "https://".concat(this.domain),
-            headers: { 'x-api-key': this.apiKey },
+            baseURL: "https://".concat(domain),
+            headers: { 'x-api-key': apiKey },
         });
         axiosRetry(this.axios, {
             retries: MAX_REQ_TRIES,

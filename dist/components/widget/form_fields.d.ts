@@ -13,5 +13,6 @@ export interface Field {
     options?: string[];
     disabled?: boolean;
     defaultValue?: string;
+    types?: string[];
 }
 export declare const GET_FORM_FIELDS: (product: string, partner: string) => Field[];
