@@ -82,9 +82,11 @@ export const FormComponent = ({
                                         pt="15px"
                                         isInvalid={errors[name]}
                                     >
-                                        <FormLabel htmlFor={name}>
-                                            {label}
-                                        </FormLabel>
+                                        <Text
+                                            style={styles.inputLabel ? styles.inputLabel : undefined}
+                                            color='#000000'
+                                            fontSize='16px'
+                                        >{label}</Text>
                                         <Input
                                             id={name}
                                             placeholder={placeholder}
@@ -111,9 +113,11 @@ export const FormComponent = ({
                                         pt="15px"
                                         isInvalid={errors[name]}
                                     >
-                                        <FormLabel htmlFor={name}>
-                                            {label}
-                                        </FormLabel>
+                                        <Text
+                                            style={styles.inputLabel ? styles.inputLabel : undefined}
+                                            color='#000000'
+                                            fontSize='16px'
+                                        >{label}</Text>
                                         <Input
                                             type="password"
                                             id={name}
@@ -141,9 +145,11 @@ export const FormComponent = ({
                                         pt="15px"
                                         isInvalid={errors[name]}
                                     >
-                                        <FormLabel htmlFor={name}>
-                                            {label}
-                                        </FormLabel>
+                                        <Text
+                                            style={styles.inputLabel ? styles.inputLabel : undefined}
+                                            color='#000000'
+                                            fontSize='16px'
+                                        >{label}</Text>
                                         <Select
                                             id={name}
                                             variant="filled"

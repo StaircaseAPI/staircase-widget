@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import {
-    ChakraProvider, Flex,
+    ChakraProvider,
     Modal,
     ModalBody,
     ModalCloseButton,
