@@ -112,7 +112,6 @@ var Api = /** @class */ (function () {
                 return true;
             },
             retryDelay: function (retryCount) {
-                console.log(retryCount);
                 return RETRY_DELAY_LENGTH_MS;
             },
         });

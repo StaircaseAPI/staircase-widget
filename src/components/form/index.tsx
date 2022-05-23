@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form'
-import { ThemeTypings } from '@chakra-ui/styled-system'
 import {
     FormErrorMessage,
     FormLabel,
@@ -11,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 
 import { ColorPicker } from './form_controls/color'
-import { Field } from '../../constants'
+import { Field } from "../widget/form_fields";
 
 interface Props {
     fields: Field[]
@@ -50,6 +49,7 @@ export const FormComponent = ({
                                         isInvalid={errors[name]}
                                     >
                                         <Text
+                                            style={styles.inputLabel ? styles.inputLabel : undefined}
                                             color='#000000'
                                             fontSize='16px'
                                         >{label}</Text>
@@ -76,6 +76,12 @@ export const FormComponent = ({
                                         <Input
                                             id={name}
                                             placeholder={placeholder}
+                                            style={styles.input ? styles.input : undefined}
+                                            _hover={styles['input:hover'] ? styles.submitButton['input:hover'] : undefined}
+                                            _focus={styles['input:focus'] ? styles.submitButton['input:focus'] : undefined}
+                                            _focusWithin={styles['input:focusWithin'] ? styles.submitButton['input:focusWithin'] : undefined}
+                                            _active={styles['input:active'] ? styles.submitButton['input:active'] : undefined}
+                                            _visited={styles['input:visited'] ? styles.submitButton['input:visited'] : undefined}
                                             borderRadius={0}
                                             padding='12px 20px'
                                             fontSize='12px'

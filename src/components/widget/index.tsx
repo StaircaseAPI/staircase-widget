@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 
 import { FormComponent } from '../form'
-import { WIDGET_FORM_FIELDS } from '../../constants'
+import { GET_FORM_FIELDS } from './form_fields'
 import { decodeJWTToken } from '../helpers'
 import { Context } from '../../context'
 
@@ -134,12 +134,16 @@ export const WidgetComponent = (props: Props) => {
                     <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
                     <ModalContent borderRadius={0}>
                         <ModalHeader>
-                            <b>Please enter your credentials</b>
+                            <b
+                                style={styles?.title ? styles.title : undefined}
+                            >
+                                Please enter your credentials
+                            </b>
                         </ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
                             <FormComponent
-                                fields={WIDGET_FORM_FIELDS}
+                                fields={GET_FORM_FIELDS(widgetSettings.product, widgetSettings.partner)}
                                 onFormComplete={onFormComplete}
                                 isLoading={isLoading}
                                 styles={styles}
