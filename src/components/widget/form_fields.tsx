@@ -41,16 +41,16 @@ const EMPLOYMENT_EQUIFAX_FIELDS: Field[] = [
             required: 'This is required',
         },
     },
-    {
-        label: 'PFX Certificate',
-        name: 'pfx_certificate',
-        placeholder: 'Upload Certificate',
-        type: 'file',
-        types: ['pfx'],
-        validation: {
-            required: 'This is required',
-        },
-    },
+    // {
+    //     label: 'PFX Certificate',
+    //     name: 'pfx_certificate',
+    //     placeholder: 'Upload Certificate',
+    //     type: 'file',
+    //     types: ['pfx'],
+    //     validation: {
+    //         required: 'This is required',
+    //     },
+    // },
 ]
 
 const EMPLOYMENT_ARGYLE_FIELDS: Field[] = [
