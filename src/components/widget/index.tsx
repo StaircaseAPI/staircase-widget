@@ -10,6 +10,7 @@ import {
     ModalOverlay, Spinner,
     useDisclosure,
 } from '@chakra-ui/react'
+import { SystemStyleObject } from "@chakra-ui/styled-system";
 
 import { FormComponent } from '../form'
 import { GET_FORM_FIELDS } from './form_fields'
@@ -27,6 +28,10 @@ interface Props {
     token: string
     onComplete: (result: any) => any
     onError: () => any
+}
+
+interface Styles {
+    input: SystemStyleObject
 }
 
 export const sleep = (ms: any) => {
@@ -183,11 +188,11 @@ export const WidgetComponent = (props: Props) => {
                 >
                     <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
                     <ModalContent
-                        style={styles?.root ? styles.root : undefined}
+                        __css={styles?.root}
                         borderRadius={0}>
                         <ModalHeader>
                             <b
-                                style={styles?.title ? styles.title : undefined}
+                                style={styles?.title}
                             >
                                 Please enter your credentials
                             </b>
@@ -197,7 +202,6 @@ export const WidgetComponent = (props: Props) => {
                             <FormComponent
                                 fields={GET_FORM_FIELDS(product, partner)}
                                 onFormComplete={onFormComplete}
-                                isLoading={isLoading}
                                 styles={styles}
                             />
                         </ModalBody>
