@@ -55,7 +55,7 @@ export const FormComponent = ({
                                         isInvalid={errors[name]}
                                     >
                                         <Text
-                                            __css={styles?.inputLabel}
+                                            sx={styles?.inputLabel}
                                             color='#000000'
                                             fontSize='16px'
                                         >{label}</Text>
@@ -80,14 +80,14 @@ export const FormComponent = ({
                                         isInvalid={errors[name]}
                                     >
                                         <Text
-                                            __css={styles?.inputLabel}
+                                            sx={styles?.inputLabel}
                                             color='#000000'
                                             fontSize='16px'
                                         >{label}</Text>
                                         <Input
                                             id={name}
                                             placeholder={placeholder}
-                                            __css={styles?.input}
+                                            sx={styles?.input}
                                             _hover={styles['input:hover']}
                                             _focus={styles['input:focus']}
                                             _focusWithin={styles['input:focusWithin']}
@@ -111,7 +111,7 @@ export const FormComponent = ({
                                         isInvalid={errors[name]}
                                     >
                                         <Text
-                                            __css={styles.inputLabel}
+                                            sx={styles.inputLabel}
                                             color='#000000'
                                             fontSize='16px'
                                         >{label}</Text>
@@ -119,7 +119,7 @@ export const FormComponent = ({
                                             type="password"
                                             id={name}
                                             placeholder={placeholder}
-                                            __css={styles.input}
+                                            sx={styles.input}
                                             _hover={styles['input:hover']}
                                             _focus={styles['input:focus']}
                                             _focusWithin={styles['input:focusWithin']}
@@ -143,7 +143,7 @@ export const FormComponent = ({
                                         isInvalid={errors[name]}
                                     >
                                         <Text
-                                            __css={styles?.inputLabel}
+                                            sx={styles?.inputLabel}
                                             color='#000000'
                                             fontSize='16px'
                                         >{label}</Text>
@@ -184,7 +184,7 @@ export const FormComponent = ({
                                         isInvalid={errors[name]}
                                     >
                                         <Text
-                                            __css={styles?.inputLabel}
+                                            sx={styles?.inputLabel}
                                             color='#000000'
                                             fontSize='16px'
                                         >
