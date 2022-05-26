@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react'
 import { ThemeTypings } from '@chakra-ui/styled-system'
 
 interface Props {
-    onColorPick: any
+    onColorPick: (color: string) => any
 }
 
 export const ColorPicker = ({ onColorPick }: Props) => {

@@ -9,61 +9,69 @@ import {
     ModalHeader,
     ModalOverlay, Spinner,
     useDisclosure,
+    Text,
 } from '@chakra-ui/react'
-import { SystemStyleObject } from "@chakra-ui/styled-system";
 
 import { FormComponent } from '../form'
 import { GET_FORM_FIELDS } from './form_fields'
-import { decodeJWTToken } from '../helpers'
+import { decodeJWTToken, sleep } from '../helpers'
 import { Api } from "../../api";
 
-interface WidgetSettings {
-    origin: string
-    api_key: string
-    job_name: string
-    execution_id: string
-}
+import {
+    TokenData,
+    Styles,
+    RequestPayload,
+    Props,
+    Outputs,
+} from './interfaces'
 
-interface Props {
-    token: string
-    onComplete: (result: any) => any
-    onError: () => any
-}
 
-interface Styles {
-    input: SystemStyleObject
-}
-
-export const sleep = (ms: any) => {
-    return new Promise((resolve) => setTimeout(resolve, ms))
-}
 
 export const WidgetComponent = (props: Props) => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     const { token, onComplete, onError } = props
 
-    const [widgetSettings, setWidgetSettings] = useState<WidgetSettings>()
-    const [styles, setStyles] = useState<any>()
-    const [requestPayload, setRequestPayload] = useState<any>()
-    const [outputs, setOutputs] = useState<any>()
+    const [tokenData, setTokenData] = useState<TokenData>()
+    const [styles, setStyles] = useState<Styles>()
+    const [requestPayload, setRequestPayload] = useState<RequestPayload>()
+    const [outputs, setOutputs] = useState<Outputs>()
+
     const [product, setProduct] = useState<string>()
     const [partner, setPartner] = useState<string>()
     const [isLoading, setIsLoading] = useState(false)
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
 
     useEffect(() => {
-        const decodedToken: any = decodeJWTToken(token)
-        setWidgetSettings(decodedToken)
+        const decodedTokenData: any = decodeJWTToken(token)
+        try {
+            const {
+                origin: decoded_origin,
+                api_key: decoded_api_key,
+                job_name: decoded_job_name,
+                execution_id: decoded_execution_id,
+            } = decodedTokenData
+            setTokenData({
+                origin: decoded_origin,
+                api_key: decoded_api_key,
+                job_name: decoded_job_name,
+                execution_id: decoded_execution_id
+            })
+        } catch (err) {
+            console.log(err)
+            onClose()
+            onError(err)
+        }
     }, [])
 
     useEffect(() => {
-        if (widgetSettings) {
+        if (tokenData) {
             if (!requestPayload) {
                 setIsLoading(true)
                 setInvocationRequestPayload().then(() => setIsLoading(false))
             }
         }
-    }, [widgetSettings])
+    }, [tokenData])
 
     useEffect(() => {
         if (requestPayload) {
@@ -83,20 +91,22 @@ export const WidgetComponent = (props: Props) => {
 
     // ONCE FORM COMPLETED
     const onFormComplete = async (values: any) => {
-        if (!widgetSettings) {
+        if (!tokenData) {
             return
         }
-        const { origin, api_key, job_name, execution_id } = widgetSettings
+        const { origin, api_key, job_name, execution_id } = tokenData
         const api = new Api(origin, api_key)
         if ('pfx_certificate' in values) {
             try {
                 const {
                     url
-                } = outputs.CreateBlob.response_payload.presigned_urls.upload
+                } = outputs?.CreateBlob?.response_payload.presigned_urls.upload
                 await api.uploadFile(url, values['pfx_certificate'])
                 delete values['pfx_certificate']
             } catch (err) {
-                console.log({err})
+                // TODO: should we close widget here?
+                console.log(err)
+                // onError(err)
             }
         }
 
@@ -120,14 +130,13 @@ export const WidgetComponent = (props: Props) => {
 
     // CHECK JOB STATUS
     const checkInvocationStatus = async () => {
-        if (!widgetSettings) {
+        if (!tokenData) {
             return
         }
-        const { job_name, execution_id, origin, api_key } = widgetSettings
+        const { job_name, execution_id, origin, api_key } = tokenData
         const api = new Api(origin, api_key)
         const {
             status: cStatus,
-            response_payload,
             outputs
         } = await api.getJobExecutionDetails(
             job_name,
@@ -138,10 +147,10 @@ export const WidgetComponent = (props: Props) => {
         switch (cStatus) {
             case 'SUCCEEDED':
                 onClose()
-                onComplete(response_payload)
+                onComplete('Credentials set successfully!')
                 return 'Credentials set successfully!'
             case 'FAILED':
-                onError()
+                onError('Execution failed')
                 return 'Execution failed'
             case 'RUNNING':
                 return
@@ -153,10 +162,10 @@ export const WidgetComponent = (props: Props) => {
     }
     // SET JOB REQUEST PAYLOAD
     const setInvocationRequestPayload = async () => {
-        if (!widgetSettings) {
+        if (!tokenData) {
             return
         }
-        const { job_name, execution_id, origin, api_key } = widgetSettings
+        const { job_name, execution_id, origin, api_key } = tokenData
         const api = new Api(origin, api_key)
         const {
             request_payload
@@ -177,7 +186,7 @@ export const WidgetComponent = (props: Props) => {
                     top: 'calc(50% - 4em)',
                     left: 'calc(50% - 4em)',
                 }}
-            /> : widgetSettings && product && partner && styles && (
+            /> : tokenData && product && partner && styles && (
                 <Modal
                     closeOnOverlayClick={false}
                     isOpen={isOpen}
@@ -191,11 +200,12 @@ export const WidgetComponent = (props: Props) => {
                         sx={styles?.root}
                         borderRadius={0}>
                         <ModalHeader>
-                            <b
-                                style={styles?.title}
+                            <Text
+                                sx={styles?.title}
+                                fontWeight={'bold'}
                             >
                                 Please enter your credentials
-                            </b>
+                            </Text>
                         </ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>

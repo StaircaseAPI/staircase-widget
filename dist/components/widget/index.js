@@ -47,36 +47,46 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from 'react';
-import { ChakraProvider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, useDisclosure, } from '@chakra-ui/react';
+import { ChakraProvider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, useDisclosure, Text, } from '@chakra-ui/react';
 import { FormComponent } from '../form';
 import { GET_FORM_FIELDS } from './form_fields';
-import { decodeJWTToken } from '../helpers';
+import { decodeJWTToken, sleep } from '../helpers';
 import { Api } from "../../api";
-export var sleep = function (ms) {
-    return new Promise(function (resolve) { return setTimeout(resolve, ms); });
-};
 export var WidgetComponent = function (props) {
+    var _a = useDisclosure(), isOpen = _a.isOpen, onOpen = _a.onOpen, onClose = _a.onClose;
     var token = props.token, onComplete = props.onComplete, onError = props.onError;
-    var _a = useState(), widgetSettings = _a[0], setWidgetSettings = _a[1];
-    var _b = useState(), styles = _b[0], setStyles = _b[1];
-    var _c = useState(), requestPayload = _c[0], setRequestPayload = _c[1];
-    var _d = useState(), outputs = _d[0], setOutputs = _d[1];
-    var _e = useState(), product = _e[0], setProduct = _e[1];
-    var _f = useState(), partner = _f[0], setPartner = _f[1];
-    var _g = useState(false), isLoading = _g[0], setIsLoading = _g[1];
-    var _h = useDisclosure(), isOpen = _h.isOpen, onOpen = _h.onOpen, onClose = _h.onClose;
+    var _b = useState(), tokenData = _b[0], setTokenData = _b[1];
+    var _c = useState(), styles = _c[0], setStyles = _c[1];
+    var _d = useState(), requestPayload = _d[0], setRequestPayload = _d[1];
+    var _e = useState(), outputs = _e[0], setOutputs = _e[1];
+    var _f = useState(), product = _f[0], setProduct = _f[1];
+    var _g = useState(), partner = _g[0], setPartner = _g[1];
+    var _h = useState(false), isLoading = _h[0], setIsLoading = _h[1];
     useEffect(function () {
-        var decodedToken = decodeJWTToken(token);
-        setWidgetSettings(decodedToken);
+        var decodedTokenData = decodeJWTToken(token);
+        try {
+            var decoded_origin = decodedTokenData.origin, decoded_api_key = decodedTokenData.api_key, decoded_job_name = decodedTokenData.job_name, decoded_execution_id = decodedTokenData.execution_id;
+            setTokenData({
+                origin: decoded_origin,
+                api_key: decoded_api_key,
+                job_name: decoded_job_name,
+                execution_id: decoded_execution_id
+            });
+        }
+        catch (err) {
+            console.log(err);
+            onClose();
+            onError(err);
+        }
     }, []);
     useEffect(function () {
-        if (widgetSettings) {
+        if (tokenData) {
             if (!requestPayload) {
                 setIsLoading(true);
                 setInvocationRequestPayload().then(function () { return setIsLoading(false); });
             }
         }
-    }, [widgetSettings]);
+    }, [tokenData]);
     useEffect(function () {
         if (requestPayload) {
             var rpStyles = requestPayload.styles, product_1 = requestPayload.product, partner_1 = requestPayload.partner;
@@ -94,34 +104,36 @@ export var WidgetComponent = function (props) {
     // ONCE FORM COMPLETED
     var onFormComplete = function (values) { return __awaiter(void 0, void 0, void 0, function () {
         var origin, api_key, job_name, execution_id, api, url, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    if (!widgetSettings) {
+                    if (!tokenData) {
                         return [2 /*return*/];
                     }
-                    origin = widgetSettings.origin, api_key = widgetSettings.api_key, job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id;
+                    origin = tokenData.origin, api_key = tokenData.api_key, job_name = tokenData.job_name, execution_id = tokenData.execution_id;
                     api = new Api(origin, api_key);
                     if (!('pfx_certificate' in values)) return [3 /*break*/, 4];
-                    _a.label = 1;
+                    _b.label = 1;
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    url = outputs.CreateBlob.response_payload.presigned_urls.upload.url;
+                    _b.trys.push([1, 3, , 4]);
+                    url = ((_a = outputs === null || outputs === void 0 ? void 0 : outputs.CreateBlob) === null || _a === void 0 ? void 0 : _a.response_payload.presigned_urls.upload).url;
                     return [4 /*yield*/, api.uploadFile(url, values['pfx_certificate'])];
                 case 2:
-                    _a.sent();
+                    _b.sent();
                     delete values['pfx_certificate'];
                     return [3 /*break*/, 4];
                 case 3:
-                    err_1 = _a.sent();
-                    console.log({ err: err_1 });
+                    err_1 = _b.sent();
+                    // TODO: should we close widget here?
+                    console.log(err_1);
                     return [3 /*break*/, 4];
                 case 4: return [4 /*yield*/, api.resumeJob(job_name, execution_id, __assign({ type: 'production', contract: 'BYOC' }, values))];
                 case 5:
-                    _a.sent();
+                    _b.sent();
                     return [4 /*yield*/, initCheckInvocation()];
                 case 6:
-                    _a.sent();
+                    _b.sent();
                     return [2 /*return*/];
             }
         });
@@ -148,26 +160,26 @@ export var WidgetComponent = function (props) {
     }); };
     // CHECK JOB STATUS
     var checkInvocationStatus = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var job_name, execution_id, origin, api_key, api, _a, cStatus, response_payload, outputs;
+        var job_name, execution_id, origin, api_key, api, _a, cStatus, outputs;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    if (!widgetSettings) {
+                    if (!tokenData) {
                         return [2 /*return*/];
                     }
-                    job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id, origin = widgetSettings.origin, api_key = widgetSettings.api_key;
+                    job_name = tokenData.job_name, execution_id = tokenData.execution_id, origin = tokenData.origin, api_key = tokenData.api_key;
                     api = new Api(origin, api_key);
                     return [4 /*yield*/, api.getJobExecutionDetails(job_name, execution_id)];
                 case 1:
-                    _a = _b.sent(), cStatus = _a.status, response_payload = _a.response_payload, outputs = _a.outputs;
+                    _a = _b.sent(), cStatus = _a.status, outputs = _a.outputs;
                     setOutputs(outputs);
                     switch (cStatus) {
                         case 'SUCCEEDED':
                             onClose();
-                            onComplete(response_payload);
+                            onComplete('Credentials set successfully!');
                             return [2 /*return*/, 'Credentials set successfully!'];
                         case 'FAILED':
-                            onError();
+                            onError('Execution failed');
                             return [2 /*return*/, 'Execution failed'];
                         case 'RUNNING':
                             return [2 /*return*/];
@@ -186,10 +198,10 @@ export var WidgetComponent = function (props) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!widgetSettings) {
+                    if (!tokenData) {
                         return [2 /*return*/];
                     }
-                    job_name = widgetSettings.job_name, execution_id = widgetSettings.execution_id, origin = widgetSettings.origin, api_key = widgetSettings.api_key;
+                    job_name = tokenData.job_name, execution_id = tokenData.execution_id, origin = tokenData.origin, api_key = tokenData.api_key;
                     api = new Api(origin, api_key);
                     return [4 /*yield*/, api.getJobExecutionDetails(job_name, execution_id)];
                 case 1:
@@ -203,5 +215,5 @@ export var WidgetComponent = function (props) {
                 position: 'absolute',
                 top: 'calc(50% - 4em)',
                 left: 'calc(50% - 4em)',
-            } }) : widgetSettings && product && partner && styles && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }), _jsxs(ModalContent, __assign({ sx: styles === null || styles === void 0 ? void 0 : styles.root, borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx("b", __assign({ style: styles === null || styles === void 0 ? void 0 : styles.title }, { children: "Please enter your credentials" })) }), _jsx(ModalCloseButton, {}), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: GET_FORM_FIELDS(product, partner), onFormComplete: onFormComplete, styles: styles }) })] }))] }))) }));
+            } }) : tokenData && product && partner && styles && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }), _jsxs(ModalContent, __assign({ sx: styles === null || styles === void 0 ? void 0 : styles.root, borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx(Text, __assign({ sx: styles === null || styles === void 0 ? void 0 : styles.title, fontWeight: 'bold' }, { children: "Please enter your credentials" })) }), _jsx(ModalCloseButton, {}), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: GET_FORM_FIELDS(product, partner), onFormComplete: onFormComplete, styles: styles }) })] }))] }))) }));
 };
