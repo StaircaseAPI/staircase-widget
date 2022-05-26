@@ -26,16 +26,16 @@ var EMPLOYMENT_EQUIFAX_FIELDS = [
             required: 'This is required',
         },
     },
-    {
-        label: 'PFX Certificate',
-        name: 'pfx_certificate',
-        placeholder: 'Upload Certificate',
-        type: 'file',
-        types: ['pfx'],
-        validation: {
-            required: 'This is required',
-        },
-    },
+    // {
+    //     label: 'PFX Certificate',
+    //     name: 'pfx_certificate',
+    //     placeholder: 'Upload Certificate',
+    //     type: 'file',
+    //     types: ['pfx'],
+    //     validation: {
+    //         required: 'This is required',
+    //     },
+    // },
 ];
 var EMPLOYMENT_ARGYLE_FIELDS = [
     {
@@ -252,7 +252,7 @@ export var GET_FORM_FIELDS = function (product, partner) {
                     return EMPLOYMENT_ATOMIC_FIELDS;
                 case 'Truework':
                     return EMPLOYMENT_TRUEWORK_FIELDS;
-                case 'TrueworkInstant':
+                case 'Truework-Instant':
                     return EMPLOYMENT_TRUEWORK_INSTANT_FIELDS;
                 case 'Pinwheel':
                     return EMPLOYMENT_PINWHEEL_FIELDS;

@@ -279,7 +279,7 @@ export const GET_FORM_FIELDS = (
                     return EMPLOYMENT_ATOMIC_FIELDS
                 case 'Truework':
                     return EMPLOYMENT_TRUEWORK_FIELDS
-                case 'TrueworkInstant':
+                case 'Truework-Instant':
                     return EMPLOYMENT_TRUEWORK_INSTANT_FIELDS
                 case 'Pinwheel':
                     return EMPLOYMENT_PINWHEEL_FIELDS
