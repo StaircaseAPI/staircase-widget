@@ -213,7 +213,7 @@ export const FormComponent = ({
                 borderRadius={0}
                 variant="solid"
                 type="submit"
-                style={styles.submitButton ? styles.submitButton : undefined}
+                sx={styles?.submitButton}
                 _hover={styles['submitButton:hover'] ? styles.submitButton['submitButton:hover'] : {
                     bg: '#04aa6dc7',
                 }}

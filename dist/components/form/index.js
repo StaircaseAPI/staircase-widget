@@ -39,7 +39,7 @@ export var FormComponent = function (_a) {
                             break;
                     }
                 }
-            }), _jsx(Button, __assign({ w: "100%", my: "15px", bg: !styles.submitButton ? '#04aa6d' : undefined, borderRadius: 0, variant: "solid", type: "submit", style: styles.submitButton ? styles.submitButton : undefined, _hover: styles['submitButton:hover'] ? styles.submitButton['submitButton:hover'] : {
+            }), _jsx(Button, __assign({ w: "100%", my: "15px", bg: !styles.submitButton ? '#04aa6d' : undefined, borderRadius: 0, variant: "solid", type: "submit", sx: styles === null || styles === void 0 ? void 0 : styles.submitButton, _hover: styles['submitButton:hover'] ? styles.submitButton['submitButton:hover'] : {
                     bg: '#04aa6dc7',
                 }, isLoading: isSubmitting }, { children: "Save" }))] })));
 };
