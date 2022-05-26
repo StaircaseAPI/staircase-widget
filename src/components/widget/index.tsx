@@ -188,7 +188,7 @@ export const WidgetComponent = (props: Props) => {
                 >
                     <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
                     <ModalContent
-                        __css={styles?.root}
+                        sx={styles?.root}
                         borderRadius={0}>
                         <ModalHeader>
                             <b
