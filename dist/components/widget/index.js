@@ -160,7 +160,7 @@ export var WidgetComponent = function (props) {
     }); };
     // CHECK JOB STATUS
     var checkInvocationStatus = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var job_name, execution_id, origin, api_key, api, _a, cStatus, outputs;
+        var job_name, execution_id, origin, api_key, api, _a, cStatus, response_payload, outputs;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -171,12 +171,12 @@ export var WidgetComponent = function (props) {
                     api = new Api(origin, api_key);
                     return [4 /*yield*/, api.getJobExecutionDetails(job_name, execution_id)];
                 case 1:
-                    _a = _b.sent(), cStatus = _a.status, outputs = _a.outputs;
+                    _a = _b.sent(), cStatus = _a.status, response_payload = _a.response_payload, outputs = _a.outputs;
                     setOutputs(outputs);
                     switch (cStatus) {
                         case 'SUCCEEDED':
                             onClose();
-                            onComplete('Credentials set successfully!');
+                            onComplete(response_payload);
                             return [2 /*return*/, 'Credentials set successfully!'];
                         case 'FAILED':
                             onError('Execution failed');

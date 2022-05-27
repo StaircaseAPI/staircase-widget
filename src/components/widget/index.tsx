@@ -137,6 +137,7 @@ export const WidgetComponent = (props: Props) => {
         const api = new Api(origin, api_key)
         const {
             status: cStatus,
+            response_payload,
             outputs
         } = await api.getJobExecutionDetails(
             job_name,
@@ -147,7 +148,7 @@ export const WidgetComponent = (props: Props) => {
         switch (cStatus) {
             case 'SUCCEEDED':
                 onClose()
-                onComplete('Credentials set successfully!')
+                onComplete(response_payload)
                 return 'Credentials set successfully!'
             case 'FAILED':
                 onError('Execution failed')
