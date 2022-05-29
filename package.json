@@ -1,65 +1,68 @@
 {
-  "name": "@staircase/partner-credentials-widget",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
-  },
-  "main": "./dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "keywords": [
-    "staircase"
-  ],
-  "version": "0.6.11",
-  "dependencies": {
-    "@chakra-ui/react": "^2.0.0",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.13",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "axios": "^0.27.2",
-    "axios-retry": "^3.2.5",
-    "framer-motion": "^6",
-    "husky": "^8.0.1",
-    "jwt-decode": "^3.1.2",
-    "lint-staged": "^12.4.1",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-drag-drop-files": "^2.3.5",
-    "react-hook-form": "^7.31.1",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.6.4",
-    "web-vitals": "^2.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "format": "prettier --loglevel warn --write \"**/*.{js,css,md,ts,tsx}\""
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+    "name": "@staircase/partner-credentials-widget",
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org"
+    },
+    "main": "./dist/index.js",
+    "files": [
+        "dist"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "keywords": [
+        "staircase"
+    ],
+    "peerDependencies": {
+        "react": "^16.8.0 || ^17 || ^18"
+    },
+    "version": "0.6.12",
+    "dependencies": {
+        "@chakra-ui/react": "^2.0.0",
+        "@emotion/react": "^11",
+        "@emotion/styled": "^11",
+        "@testing-library/jest-dom": "^5.14.1",
+        "@testing-library/react": "^13.0.0",
+        "@testing-library/user-event": "^13.2.1",
+        "@types/jest": "^27.0.1",
+        "@types/node": "^16.7.13",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "axios": "^0.27.2",
+        "axios-retry": "^3.2.5",
+        "framer-motion": "^6",
+        "husky": "^8.0.1",
+        "jwt-decode": "^3.1.2",
+        "lint-staged": "^12.4.1",
+        "react": "^18.1.0",
+        "react-dom": "^18.1.0",
+        "react-drag-drop-files": "^2.3.5",
+        "react-hook-form": "^7.31.1",
+        "react-router-dom": "^6.3.0",
+        "react-scripts": "5.0.1",
+        "typescript": "^4.6.4",
+        "web-vitals": "^2.1.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "format": "prettier --loglevel warn --write \"**/*.{js,css,md,ts,tsx}\""
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }
