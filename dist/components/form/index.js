@@ -23,29 +23,29 @@ export var FormComponent = function (_a) {
                     var component = void 0;
                     switch (type) {
                         case 'file':
-                            component = (_jsx(FileUploader, { id: "fileUploader", handleChange: function (ev) { return setValue(name, ev); }, name: "file", types: types, label: "Drag or Click here to upload", multiple: false }));
+                            component = (_jsx(FileUploader, { id: "fileUploader", handleChange: function (ev) { return setValue(name, ev); }, name: "file", types: types, label: "Drag or Click here to upload", multiple: false }, void 0));
                             break;
                         case 'string':
                         case 'password':
-                            component = (_jsx(Input, __assign({ id: name, placeholder: placeholder, sx: styles === null || styles === void 0 ? void 0 : styles.input, type: type === 'password' ? type : 'text', _hover: styles['input:hover'], _focus: styles['input:focus'], _focusWithin: styles['input:focusWithin'], _active: styles['input:active'], _visited: styles['input:visited'], borderRadius: 0, padding: '12px 20px', fontSize: '12px' }, register(name, validation))));
+                            component = (_jsx(Input, __assign({ id: name, placeholder: placeholder, sx: styles === null || styles === void 0 ? void 0 : styles.input, type: type === 'password' ? type : 'text', _hover: styles['input:hover'], _focus: styles['input:focus'], _focusWithin: styles['input:focusWithin'], _active: styles['input:active'], _visited: styles['input:visited'], borderRadius: 0, padding: '12px 20px', fontSize: '12px' }, register(name, validation)), void 0));
                             break;
                         case 'select':
                             component = (_jsx(Select, __assign({ id: name, variant: "filled", placeholder: placeholder }, register(name, validation), { children: _jsx(_Fragment, { children: options === null || options === void 0 ? void 0 : options.map(function (option, key) {
                                         return (_jsx("option", __assign({ value: option }, { children: option }), key));
-                                    }) }) })));
+                                    }) }, void 0) }), void 0));
                             break;
                         case 'color':
                             component = (_jsx(ColorPicker, { onColorPick: function (color) {
                                     setValue(name, color);
-                                } }));
+                                } }, void 0));
                             break;
                         default:
-                            component = (_jsx(Input, __assign({ id: name, placeholder: placeholder, sx: styles === null || styles === void 0 ? void 0 : styles.input, _hover: styles['input:hover'], _focus: styles['input:focus'], _focusWithin: styles['input:focusWithin'], _active: styles['input:active'], _visited: styles['input:visited'], borderRadius: 0, padding: '12px 20px', fontSize: '12px' }, register(name, validation))));
+                            component = (_jsx(Input, __assign({ id: name, placeholder: placeholder, sx: styles === null || styles === void 0 ? void 0 : styles.input, _hover: styles['input:hover'], _focus: styles['input:focus'], _focusWithin: styles['input:focusWithin'], _active: styles['input:active'], _visited: styles['input:visited'], borderRadius: 0, padding: '12px 20px', fontSize: '12px' }, register(name, validation)), void 0));
                             break;
                     }
-                    return _jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(Text, __assign({ sx: styles === null || styles === void 0 ? void 0 : styles.inputLabel, color: '#000000', fontSize: '16px' }, { children: label })), component, _jsx(FormErrorMessage, { children: errors.name && errors.name.message })] }), index);
+                    return _jsxs(FormControl, __assign({ pt: "15px", isInvalid: errors[name] }, { children: [_jsx(Text, __assign({ sx: styles === null || styles === void 0 ? void 0 : styles.inputLabel, color: '#000000', fontSize: '16px' }, { children: label }), void 0), component, _jsx(FormErrorMessage, { children: errors.name && errors.name.message }, void 0)] }), index);
                 }
             }), _jsx(Button, __assign({ w: "100%", my: "15px", bg: '#04aa6d', borderRadius: 0, variant: "solid", type: "submit", sx: styles === null || styles === void 0 ? void 0 : styles.submitButton, _hover: styles['submitButton:hover'] ? styles['submitButton:hover'] : {
                     bg: '#04aa6dc7',
-                }, isLoading: isSubmitting }, { children: "Save" }))] })));
+                }, isLoading: isSubmitting }, { children: "Save" }), void 0)] }), void 0));
 };

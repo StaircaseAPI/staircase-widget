@@ -1,8 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { WidgetComponent } from './components';
-import ReactDOM from 'react-dom/client';
+import { render } from 'react-dom';
 export var renderWidget = function (element, token, onComplete, onError) {
-    var root = ReactDOM.createRoot(element);
-    root.render(_jsx(WidgetComponent, { token: token, onComplete: onComplete, onError: onError }));
+    render(_jsx(WidgetComponent, { token: token, onComplete: onComplete, onError: onError }, void 0), element);
 };
 export { WidgetComponent as Widget } from './components';
