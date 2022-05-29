@@ -1,5 +1,5 @@
 import { WidgetComponent } from './components'
-import ReactDOM from 'react-dom/client'
+import { render } from 'react-dom'
 
 export const renderWidget = (
     element: HTMLElement,
@@ -7,14 +7,15 @@ export const renderWidget = (
     onComplete: () => any,
     onError: () => any
 ) => {
-    const root = ReactDOM.createRoot(element)
-    root.render(
+    render(
         <WidgetComponent
             token={token}
             onComplete={onComplete}
             onError={onError}
-        />
+        />,
+        element
     )
 }
 
 export { WidgetComponent as Widget } from './components'
+
