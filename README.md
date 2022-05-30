@@ -1,5 +1,7 @@
 # Staircase Widget app
 Provides React components to use.
+v^2.0.0 supports React 18
+v^1.0.0 supports React 16
 
 ## Install
 
@@ -10,6 +12,11 @@ Provides React components to use.
 ### yarn 
 
 ```yarn add @staircase/partner-credentials-widget```
+
+### React 16 and yarn
+
+```yarn add @staircase/partner-credentials-widget@^1.0.0```
+
 
 
 ## Examples of usage
