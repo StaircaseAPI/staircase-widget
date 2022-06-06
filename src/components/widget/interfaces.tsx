@@ -31,6 +31,7 @@ export interface Props {
     token: string
     onComplete: (result: any) => any
     onError: (error: any) => any
+    onClose: () => any
 }
 
 export interface Outputs {

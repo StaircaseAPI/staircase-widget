@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 import {
     ChakraProvider,
@@ -7,7 +7,8 @@ import {
     ModalCloseButton,
     ModalContent,
     ModalHeader,
-    ModalOverlay, Spinner,
+    ModalOverlay,
+    Spinner,
     useDisclosure,
     Text,
 } from '@chakra-ui/react'
@@ -15,22 +16,18 @@ import {
 import { FormComponent } from '../form'
 import { GET_FORM_FIELDS } from './form_fields'
 import { decodeJWTToken, sleep } from '../helpers'
-import { Api } from "../../api";
+import { Api } from '../../api'
 
-import {
-    TokenData,
-    Styles,
-    RequestPayload,
-    Props,
-    Outputs,
-} from './interfaces'
-
-
+import { TokenData, Styles, RequestPayload, Props, Outputs } from './interfaces'
 
 export const WidgetComponent = (props: Props) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { token, onComplete, onError, onClose: onCloseWidget } = props
+    const { isOpen, onOpen, onClose: onCloseModal } = useDisclosure()
 
-    const { token, onComplete, onError } = props
+    const onClose = useCallback(() => {
+        onCloseWidget()
+        onCloseModal()
+    }, [onCloseWidget, onCloseModal])
 
     const [tokenData, setTokenData] = useState<TokenData>()
     const [styles, setStyles] = useState<Styles>()
@@ -40,7 +37,6 @@ export const WidgetComponent = (props: Props) => {
     const [product, setProduct] = useState<string>()
     const [partner, setPartner] = useState<string>()
     const [isLoading, setIsLoading] = useState(false)
-
 
     useEffect(() => {
         const decodedTokenData: any = decodeJWTToken(token)
@@ -55,7 +51,7 @@ export const WidgetComponent = (props: Props) => {
                 origin: decoded_origin,
                 api_key: decoded_api_key,
                 job_name: decoded_job_name,
-                execution_id: decoded_execution_id
+                execution_id: decoded_execution_id,
             })
         } catch (err) {
             console.log(err)
@@ -98,9 +94,8 @@ export const WidgetComponent = (props: Props) => {
         const api = new Api(origin, api_key)
         if ('pfx_certificate' in values) {
             try {
-                const {
-                    url
-                } = outputs?.CreateBlob?.response_payload.presigned_urls.upload
+                const { url } =
+                    outputs?.CreateBlob?.response_payload.presigned_urls.upload
                 await api.uploadFile(url, values['pfx_certificate'])
                 delete values['pfx_certificate']
             } catch (err) {
@@ -138,11 +133,8 @@ export const WidgetComponent = (props: Props) => {
         const {
             status: cStatus,
             response_payload,
-            outputs
-        } = await api.getJobExecutionDetails(
-            job_name,
-            execution_id
-        )
+            outputs,
+        } = await api.getJobExecutionDetails(job_name, execution_id)
         setOutputs(outputs)
 
         switch (cStatus) {
@@ -168,9 +160,7 @@ export const WidgetComponent = (props: Props) => {
         }
         const { job_name, execution_id, origin, api_key } = tokenData
         const api = new Api(origin, api_key)
-        const {
-            request_payload
-        } = await api.getJobExecutionDetails(
+        const { request_payload } = await api.getJobExecutionDetails(
             job_name,
             execution_id
         )
@@ -179,45 +169,47 @@ export const WidgetComponent = (props: Props) => {
 
     return (
         <ChakraProvider>
-            {isLoading ? <Spinner
-                thickness="6px"
-                size="xl"
-                style={{
-                    position: 'absolute',
-                    top: 'calc(50% - 4em)',
-                    left: 'calc(50% - 4em)',
-                }}
-            /> : tokenData && product && partner && styles && (
-                <Modal
-                    closeOnOverlayClick={false}
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    isCentered
-                    motionPreset="scale"
-                    size={'sm'}
-                >
-                    <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
-                    <ModalContent
-                        sx={styles?.root}
-                        borderRadius={0}>
-                        <ModalHeader>
-                            <Text
-                                sx={styles?.title}
-                                fontWeight={'bold'}
-                            >
-                                Please enter your credentials
-                            </Text>
-                        </ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody>
-                            <FormComponent
-                                fields={GET_FORM_FIELDS(product, partner)}
-                                onFormComplete={onFormComplete}
-                                styles={styles}
-                            />
-                        </ModalBody>
-                    </ModalContent>
-                </Modal>
+            {isLoading ? (
+                <Spinner
+                    thickness="6px"
+                    size="xl"
+                    style={{
+                        position: 'absolute',
+                        top: 'calc(50% - 4em)',
+                        left: 'calc(50% - 4em)',
+                    }}
+                />
+            ) : (
+                tokenData &&
+                product &&
+                partner &&
+                styles && (
+                    <Modal
+                        closeOnOverlayClick={false}
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        isCentered
+                        motionPreset="scale"
+                        size={'sm'}
+                    >
+                        <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
+                        <ModalContent sx={styles?.root} borderRadius={0}>
+                            <ModalHeader>
+                                <Text sx={styles?.title} fontWeight={'bold'}>
+                                    Please enter your credentials
+                                </Text>
+                            </ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <FormComponent
+                                    fields={GET_FORM_FIELDS(product, partner)}
+                                    onFormComplete={onFormComplete}
+                                    styles={styles}
+                                />
+                            </ModalBody>
+                        </ModalContent>
+                    </Modal>
+                )
             )}
         </ChakraProvider>
     )

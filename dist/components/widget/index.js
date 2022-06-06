@@ -46,15 +46,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { ChakraProvider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, useDisclosure, Text, } from '@chakra-ui/react';
 import { FormComponent } from '../form';
 import { GET_FORM_FIELDS } from './form_fields';
 import { decodeJWTToken, sleep } from '../helpers';
-import { Api } from "../../api";
+import { Api } from '../../api';
 export var WidgetComponent = function (props) {
-    var _a = useDisclosure(), isOpen = _a.isOpen, onOpen = _a.onOpen, onClose = _a.onClose;
-    var token = props.token, onComplete = props.onComplete, onError = props.onError;
+    var token = props.token, onComplete = props.onComplete, onError = props.onError, onCloseWidget = props.onClose;
+    var _a = useDisclosure(), isOpen = _a.isOpen, onOpen = _a.onOpen, onCloseModal = _a.onClose;
+    var onClose = useCallback(function () {
+        onCloseWidget();
+        onCloseModal();
+    }, [onCloseWidget, onCloseModal]);
     var _b = useState(), tokenData = _b[0], setTokenData = _b[1];
     var _c = useState(), styles = _c[0], setStyles = _c[1];
     var _d = useState(), requestPayload = _d[0], setRequestPayload = _d[1];
@@ -70,7 +74,7 @@ export var WidgetComponent = function (props) {
                 origin: decoded_origin,
                 api_key: decoded_api_key,
                 job_name: decoded_job_name,
-                execution_id: decoded_execution_id
+                execution_id: decoded_execution_id,
             });
         }
         catch (err) {
@@ -211,9 +215,12 @@ export var WidgetComponent = function (props) {
             }
         });
     }); };
-    return (_jsx(ChakraProvider, { children: isLoading ? _jsx(Spinner, { thickness: "6px", size: "xl", style: {
+    return (_jsx(ChakraProvider, { children: isLoading ? (_jsx(Spinner, { thickness: "6px", size: "xl", style: {
                 position: 'absolute',
                 top: 'calc(50% - 4em)',
                 left: 'calc(50% - 4em)',
-            } }, void 0) : tokenData && product && partner && styles && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }, void 0), _jsxs(ModalContent, __assign({ sx: styles === null || styles === void 0 ? void 0 : styles.root, borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx(Text, __assign({ sx: styles === null || styles === void 0 ? void 0 : styles.title, fontWeight: 'bold' }, { children: "Please enter your credentials" }), void 0) }, void 0), _jsx(ModalCloseButton, {}, void 0), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: GET_FORM_FIELDS(product, partner), onFormComplete: onFormComplete, styles: styles }, void 0) }, void 0)] }), void 0)] }), void 0)) }, void 0));
+            } }, void 0)) : (tokenData &&
+            product &&
+            partner &&
+            styles && (_jsxs(Modal, __assign({ closeOnOverlayClick: false, isOpen: isOpen, onClose: onClose, isCentered: true, motionPreset: "scale", size: 'sm' }, { children: [_jsx(ModalOverlay, { backdropFilter: "blur(10px) hue-rotate(90deg)" }, void 0), _jsxs(ModalContent, __assign({ sx: styles === null || styles === void 0 ? void 0 : styles.root, borderRadius: 0 }, { children: [_jsx(ModalHeader, { children: _jsx(Text, __assign({ sx: styles === null || styles === void 0 ? void 0 : styles.title, fontWeight: 'bold' }, { children: "Please enter your credentials" }), void 0) }, void 0), _jsx(ModalCloseButton, {}, void 0), _jsx(ModalBody, { children: _jsx(FormComponent, { fields: GET_FORM_FIELDS(product, partner), onFormComplete: onFormComplete, styles: styles }, void 0) }, void 0)] }), void 0)] }), void 0))) }, void 0));
 };
