@@ -5,7 +5,8 @@ export const renderWidget = (
     element: HTMLElement,
     token: string,
     onComplete: () => any,
-    onError: () => any
+    onError: () => any,
+    onClose: () => any
 ) => {
     const root = ReactDOM.createRoot(element)
     root.render(
@@ -13,6 +14,7 @@ export const renderWidget = (
             token={token}
             onComplete={onComplete}
             onError={onError}
+            onClose={onClose}
         />
     )
 }
