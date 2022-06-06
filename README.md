@@ -1,7 +1,7 @@
 # Staircase Widget app
-Provides React components to use.
-v^2.0.0 supports React 18
-v^1.0.0 supports React 16
+Provides React components to use.  
+v^2.0.0 supports React 18  
+v^1.0.0 supports React 16  
 
 ## Install
 
