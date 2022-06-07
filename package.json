@@ -4,6 +4,15 @@
         "registry": "https://registry.npmjs.org"
     },
     "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs",
+            "types": "./dist/index.d.ts"
+        }
+    },
     "files": [
         "dist"
     ],
@@ -64,5 +73,9 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@swc/core": "^1.2.197",
+        "tsup": "^6.1.0"
     }
 }
