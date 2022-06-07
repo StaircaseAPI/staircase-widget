@@ -61,5 +61,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@swc/core": "^1.2.197",
+    "tsup": "^6.1.0"
   }
 }

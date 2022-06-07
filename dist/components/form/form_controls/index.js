@@ -1,1 +1,0 @@
-export { FileFormControlComponent } from './file';
