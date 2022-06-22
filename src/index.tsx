@@ -1,3 +1,4 @@
+import React from 'react'
 import { WidgetComponent } from './components'
 import { render } from 'react-dom'
 
@@ -20,4 +21,3 @@ export const renderWidget = (
 }
 
 export { WidgetComponent as Widget } from './components'
-
