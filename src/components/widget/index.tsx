@@ -87,30 +87,36 @@ export const WidgetComponent = (props: Props) => {
 
     // ONCE FORM COMPLETED
     const onFormComplete = async (values: any) => {
-        if (!tokenData) {
-            return
-        }
-        const { origin, api_key, job_name, execution_id } = tokenData
-        const api = new Api(origin, api_key)
-        if ('pfx_certificate' in values) {
-            try {
-                const { url } =
-                    outputs?.CreateBlob?.response_payload.presigned_urls.upload
-                await api.uploadFile(url, values['pfx_certificate'])
-                delete values['pfx_certificate']
-            } catch (err) {
-                // TODO: should we close widget here?
-                console.log(err)
-                // onError(err)
+        try {
+            if (!tokenData) {
+                return
             }
-        }
+            const { origin, api_key, job_name, execution_id } = tokenData
+            const api = new Api(origin, api_key)
+            if ('pfx_certificate' in values) {
+                try {
+                    const { url } =
+                        outputs?.CreateBlob?.response_payload.presigned_urls
+                            .upload
+                    await api.uploadFile(url, values['pfx_certificate'])
+                    delete values['pfx_certificate']
+                } catch (err) {
+                    // TODO: should we close widget here?
+                    console.log(err)
+                    onError('Api error')
+                }
+            }
 
-        await api.resumeJob(job_name, execution_id, {
-            type: 'production',
-            contract: 'BYOC',
-            ...values,
-        })
-        await initCheckInvocation()
+            await api.resumeJob(job_name, execution_id, {
+                type: 'production',
+                contract: 'BYOC',
+                ...values,
+            })
+            await initCheckInvocation()
+        } catch (e) {
+            console.log('Error inside widget', e)
+            onError('Unhandled error inside widget.')
+        }
     }
 
     const initCheckInvocation = async () => {
