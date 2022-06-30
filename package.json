@@ -22,7 +22,7 @@
     "peerDependencies": {
         "react": "^16.8.0 || ^17"
     },
-    "version": "1.0.6",
+    "version": "1.0.7",
     "dependencies": {
         "@chakra-ui/react": "^1.0.0",
         "@emotion/react": "^11",
