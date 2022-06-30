@@ -32,15 +32,6 @@ const EMPLOYMENT_EQUIFAX_FIELDS: Field[] = [
             required: 'This is required',
         },
     },
-    {
-        label: 'PFX Certificate Password',
-        name: 'pfx_certificate_password',
-        placeholder: 'Enter PFX Certificate Password',
-        type: 'password',
-        validation: {
-            required: 'This is required',
-        },
-    },
     // {
     //     label: 'PFX Certificate',
     //     name: 'pfx_certificate',
@@ -270,15 +261,6 @@ const INCOME_EQUIFAX_FIELDS: Field[] = [
         label: 'TWN Password',
         name: 'twn_password',
         placeholder: 'Enter TWN Password',
-        type: 'password',
-        validation: {
-            required: 'This is required',
-        },
-    },
-    {
-        label: 'PFX Certificate Password',
-        name: 'pfx_certificate_password',
-        placeholder: 'Enter PFX Certificate Password',
         type: 'password',
         validation: {
             required: 'This is required',
